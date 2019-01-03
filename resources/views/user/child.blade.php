@@ -1,17 +1,19 @@
 @extends('layouts.mama')
 
-@section('title') {{$title}}    @endsection
+@section('title')
+    {{$title}}
+@endsection
 
 @section('header')
     @parent
-    <p style="color: red;">This is Child header.</p>
+    <p style="color: #ff000a;">This is Child header.</p>
 @endsection
 
 @section('content')
-    <p>这里是 Child Content.
+    <p>这里是 Child Content.</p>
     <table border="1">
         <thead>
-        <td>UID</td><td>Name</td><td>Age</td><td>Email</td><td>Reg_time</td>
+            <td>UID</td><td>Name</td><td>Age</td><td>Email</td><td>Reg_time</td>
         </thead>
         <tbody>
         @foreach($list as $v)

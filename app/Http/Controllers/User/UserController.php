@@ -55,8 +55,7 @@ class UserController extends Controller
     public function viewTest2()
     {
         $list = UserModel::all()->toArray();
-        //echo '<pre>';print_r($list);echo '</pre>';
-
+        
         $data = [
             'title'     => 'XXXX',
             'list'      => $list
@@ -64,8 +63,6 @@ class UserController extends Controller
 
         return view('user.child',$data);
     }
-
-
     /**
      * 用户注册
      * 2019年1月3日14:26:56
