@@ -21,6 +21,7 @@ class UserController extends Controller
         echo '<pre>';print_r($_GET);echo '</pre>';
     }
 
+    //用户随机注册
 	public function add()
 	{
 		$data = [
@@ -33,10 +34,11 @@ class UserController extends Controller
 		$id = UserModel::insertGetId($data);
 		var_dump($id);
 	}
-	public function data()
-    {
-	    echo date('Y-m-d H:i:s');
-    }
+
+    /**
+     * 用户列表展示
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function usershow()
     {
 	        $info=UserModel::all();
@@ -50,7 +52,6 @@ class UserController extends Controller
         $data = [];
         return view('user.index',$data);
     }
-
     public function viewTest2()
     {
         $list = UserModel::all()->toArray();
@@ -63,6 +64,8 @@ class UserController extends Controller
 
         return view('user.child',$data);
     }
+
+
     /**
      * 用户注册
      * 2019年1月3日14:26:56
@@ -75,23 +78,47 @@ class UserController extends Controller
 
     public function doReg(Request $request)
     {
-        echo __METHOD__;
-        echo '<pre>';print_r($_POST);echo '</pre>';
-
+        $pwd=$request->input('u_pwd');
+        $qpwd=$request->input('u_qpwd');
+        if($pwd!==$qpwd){
+            echo '密码和确认密码必须一致';exit;
+        }else{
+            $pwd=md5($pwd);
+        }
         $data = [
             'name'  => $request->input('u_name'),
             'age'  => $request->input('u_age'),
+            'pwd'  => $pwd,
             'email'  => $request->input('u_email'),
             'reg_time'  => time(),
         ];
 
         $uid = UserModel::insertGetId($data);
-        var_dump($uid);
-
         if($uid){
             echo '注册成功';
+            header("refresh:2;'/userlogin'");
         }else{
             echo '注册失败';
         }
+    }
+    /**用户登录*/
+    public function loginview(){
+        return view('user.login');
+    }
+    public function userlogin(Request $request){
+        $u_name=$request->input('u_name');
+        $pwd=$request->input('u_pwd');
+       $where=[
+         'name'=>$u_name,
+         'pwd'=>md5($pwd)
+       ];
+       $data=UserModel::where($where)->get()->toArray();
+
+       if(empty($data)){
+           echo '账号或密码有误';exit;
+       }else{
+           echo '登录成功';
+           header("refresh:2;'/userlist'");
+       }
     }
 }

@@ -10,7 +10,9 @@
 <body>
 <form action="/userreg" method="post">
     {{csrf_field()}}
-   用户名： <input type="text" name="u_name"><br>
+    用户名： <input type="text" name="u_name"><br>
+    密码： <input type="password" name="u_pwd"><br>
+    确认密码： <input type="password" name="u_qpwd"><br>
     Email: <input type="text" name="u_email"><br>
     年龄： <input type="text" name="u_age"><br>
     <input type="submit" value="提交">
