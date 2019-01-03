@@ -52,3 +52,7 @@ Route::get('/data','User\UserController@data');
 Route::get('/userlist','User\UserController@usershow');
 Route::get('/view/child','User\UserController@viewTest1');
 Route::get('/view/index','User\UserController@viewTest2');
+
+//用户注册
+Route::get('/userreg','User\UserController@reg');
+Route::post('/userreg','User\UserController@doReg');
