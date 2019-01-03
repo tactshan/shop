@@ -39,7 +39,28 @@ class UserController extends Controller
     }
     public function usershow()
     {
-	        $info=UserModel::all()->toArray();
-	        return view('user.userlist',$info);
+	        $info=UserModel::all();
+	        $data=[
+	          'info'=>$info
+            ];
+	        return view('user.userlist',$data);
+    }
+    public function viewTest1()
+    {
+        $data = [];
+        return view('user.index',$data);
+    }
+
+    public function viewTest2()
+    {
+        $list = UserModel::all()->toArray();
+        //echo '<pre>';print_r($list);echo '</pre>';
+
+        $data = [
+            'title'     => 'XXXX',
+            'list'      => $list
+        ];
+
+        return view('user.child',$data);
     }
 }

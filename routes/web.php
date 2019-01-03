@@ -49,4 +49,6 @@ Route::any('/test/abc','Test\TestController@abc');
 
 //测试
 Route::get('/data','User\UserController@data');
-Route::get('/usershow','User\UserController@usershow');
+Route::get('/userlist','User\UserController@usershow');
+Route::get('/view/child','User\UserController@viewTest1');
+Route::get('/view/index','User\UserController@viewTest2');

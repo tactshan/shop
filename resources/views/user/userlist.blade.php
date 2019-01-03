@@ -1,3 +1,3 @@
-<?php
-{{$info}}
-?>
+@foreach($info as $v)
+    {{$v->uid}}
+    @endforeach
