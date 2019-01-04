@@ -1,5 +1,7 @@
+@extends('layouts.bootstrap')
 
-    <table border="1">
+@section('content')
+    <table border="1" class="table table-bordered">
         <tr>
             <td>用户id</td>
             <td>用户姓名</td>
@@ -17,3 +19,4 @@
             </tr>
         @endforeach
     </table>
+@endsection
