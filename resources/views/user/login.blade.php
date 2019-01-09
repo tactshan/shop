@@ -7,18 +7,19 @@
     <body>
         <form action="/userlogin" method="post">
             {{csrf_field()}}
-            <table class="table table-bordered">
-                <h2>用户登录</h2>
+            <table class="table table-bordered" style="width: 300px;">
+                <h2>Login</h2>
                 <tr>
-                    <td>用户名：</td>
-                    <td><input type="text" name="u_name"></td>
+                    <td width="100px">Email:</td>
+                    <td><input type="text" name="u_email"></td>
                 </tr>
                 <tr>
-                    <td>密码</td>
+                    <td>Password:</td>
                     <td><input type="password" name="u_pwd"></td>
                 </tr>
             </table>
-            <input class="btn btn-danger" type="submit" value="提交">
+            <input class="btn btn-danger" type="submit" value="Login">
+            <button class="btn btn-danger" ><a href="/userreg" style="text-decoration: none;color: white;">Go register!</a></button>
         </form>
     </body>
 @endsection

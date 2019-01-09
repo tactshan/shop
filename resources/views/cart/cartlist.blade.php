@@ -4,19 +4,17 @@
     <h1><font>UID:{{$uid}} Welcome back!</font></h1>
     <table border="1" class="table table-bordered">
         <tr>
-            <td>用户id</td>
-            <td>用户姓名</td>
-            <td>年龄</td>
-            <td>邮箱号</td>
-            <td>添加时间</td>
+            <td>商品id</td>
+            <td>商品名称</td>
+            <td>购买数量</td>
+            <td>操作</td>
         </tr>
         @foreach($info as $v)
             <tr>
-                <td>{{$v->uid}}</td>
-                <td>{{$v->name}}</td>
-                <td>{{$v->age}}</td>
-                <td>{{$v->email}}</td>
-                <td>{{date('Y-m-d H:i:s',$v->reg_time)}}</td>
+                <td>{{$v->goods_id}}</td>
+                <td>{{$v->goods_name}}</td>
+                <td>{{$v->buy_number}}</td>
+                <td><a href="/delcart/<?php echo $v['goods_id']?>">删除</a></td>
             </tr>
         @endforeach
     </table>

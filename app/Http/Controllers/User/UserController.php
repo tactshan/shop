@@ -9,60 +9,21 @@ use App\Model\UserModel;
 
 class UserController extends Controller
 {
-    //
-
-	public function user($uid)
-	{
-		echo $uid;
-	}
-
-	public function test()
-    {
-        echo '<pre>';print_r($_GET);echo '</pre>';
-    }
-
-    //用户随机注册
-	public function add()
-	{
-		$data = [
-			'name'      => str_random(5),
-			'age'       => mt_rand(20,99),
-			'email'     => str_random(6) . '@gmail.com',
-			'reg_time'  => time()
-		];
-
-		$id = UserModel::insertGetId($data);
-		var_dump($id);
-	}
-
     /**
      * 用户列表展示
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function usershow()
+    public function usershow(Request $request)
     {
-	        $info=UserModel::all();
+        $info=UserModel::all();
+        $uid=$_COOKIE['uid'];
 	        $data=[
-	          'info'=>$info
+	          'info'=>$info,
+                'uid'=>$uid
             ];
 	        return view('user.userlist',$data);
     }
-    public function viewTest1()
-    {
-        $data = [];
-        return view('user.index',$data);
-    }
-    public function viewTest2()
-    {
-        $list = UserModel::all()->toArray();
-        
-        $data = [
-            'title'     => 'XXXX',
-            'list'      => $list
-        ];
 
-        return view('user.child',$data);
-    }
     /**
      * 用户注册
      * 2019年1月3日14:26:56
@@ -72,15 +33,29 @@ class UserController extends Controller
     {
         return view('user.reg');
     }
-
     public function doReg(Request $request)
     {
+        $u_name=$request->input('u_name');
+        if(empty($u_name)){
+            exit('User name Can\'t be empty!');
+        }else{
+            //唯一性验证
+            $userInfo=UserModel::where(['name'=>$u_name])->first();
+            if(!empty($userInfo)){
+                header("refresh:3;url=/userreg");
+                exit('This user name has already been registered.');
+            }
+        }
+        $u_age=$request->input('u_age');
+        if(empty($u_age)){
+            exit('Please fill in your age!');
+        }
         $pwd=$request->input('u_pwd');
         $qpwd=$request->input('u_qpwd');
         if($pwd!==$qpwd){
-            echo '密码和确认密码必须一致';exit;
+            exit('Password and confirm password must be consistent!');
         }else{
-            $pwd=md5($pwd);
+            $pwd=password_hash($pwd,PASSWORD_BCRYPT);
         }
         $data = [
             'name'  => $request->input('u_name'),
@@ -89,33 +64,55 @@ class UserController extends Controller
             'email'  => $request->input('u_email'),
             'reg_time'  => time(),
         ];
-
         $uid = UserModel::insertGetId($data);
         if($uid){
-            echo '注册成功';
-            header("refresh:2;'/userlogin'");
+            setcookie('uid',$uid,time()+86400,'','',false,true);
+            echo 'Registered successfully';
+            header("refresh:2;url=/userlogin");
         }else{
-            echo '注册失败';
+            echo 'Registered fail';
         }
     }
-    /**用户登录*/
+
+    /**
+     * 用户登录
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function loginview(){
         return view('user.login');
     }
     public function userlogin(Request $request){
-        $u_name=$request->input('u_name');
+        $u_email=$request->input('u_email');
+        if(empty($u_email)){
+            exit('Email can\'t be empty');
+        }
         $pwd=$request->input('u_pwd');
+        if(empty($pwd)){
+            exit('Password can\' be empty');
+        }
        $where=[
-         'name'=>$u_name,
-         'pwd'=>md5($pwd)
+         'email'=>$u_email,
        ];
-       $data=UserModel::where($where)->get()->toArray();
-
-       if(empty($data)){
-           echo '账号或密码有误';exit;
+       $data=UserModel::where($where)->first();
+        $token = substr(md5(time().mt_rand(1,99999)),10,10);
+       if(password_verify($pwd,$data->pwd)){
+           setcookie('uid',"$data->uid",time()+86400,'','',false,true);
+           setcookie('token',$token,time()+86400,'','',false,true);
+           $request->session()->put('u_token',$token);
+           echo 'Login successfully';
+           header("refresh:2;url=/userlist");
        }else{
-           echo '登录成功';
-           header("refresh:2;'/userlist'");
+           header("refresh:2;url=/userlogin");
+           echo 'Email or Password is error';exit;
        }
+    }
+
+    /**
+     * 退出
+     *
+     */
+    public function quit(){
+        setcookie('uid','',time()-1);
+        header("refresh:0;url=/userlogin");
     }
 }
