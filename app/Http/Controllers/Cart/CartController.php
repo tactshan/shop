@@ -38,7 +38,7 @@ class CartController extends Controller
           'goods_id'=>$goods_id,
           'user_id'=>$uid
         ];
-        $cartData=CartModel::where($cartWhere)->first()->toArray();
+        $cartData=CartModel::where($cartWhere)->first();
         if(!empty($cartData)){
             //该商品已存在该用户的购物车中--做累加
             $cart_id=$cartData['cart_id'];
@@ -90,21 +90,26 @@ class CartController extends Controller
     }
     //删除购物车
     public function delCartInfo($goods_id){
-        //根据商品id查看是否存在购物车中
-        $cart_goods=session()->get('cart_goods');
-
-        if(!empty($cart_goods)){
-//            if(!in_array($goods_id,$cart_goods)){
-//                exit('删除失败！');
-//            }else{
-                foreach ($cart_goods as $k=>$v){
-                    if($goods_id == $v['goods_id'] ){
-                        session()->pull('cart_goods.'.$k);
-                        echo '删除成功';
-                        header("refresh:3;url=/cartlist");
-                    }
-                }
-//            }
+        $uid=$_COOKIE['uid'];
+        $where=[
+          'user_id'=>$uid,
+          'goods_id'=>$goods_id
+        ];
+        $cartGoodsData=CartModel::where($where)->first()->toArray();
+        $res=CartModel::where($where)->delete();
+        if($res){
+            //归还库存
+            $buy_number=$cartGoodsData['buy_number'];
+            $where=[
+              'godos_id'=>$goods_id
+            ];
+            $goodsData=GoodsModel::where($where)->first()->toArray();
+            $goodsData['goods_stock']=$goodsData['goods_stock']+$buy_number;
+            $res=GoodsModel::where($where)->update($goodsData);
+            if($res){
+                echo ('删除成功');
+                header("refresh:2;url=/cartlist");
+            }
         }
     }
 }
