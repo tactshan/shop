@@ -73,15 +73,11 @@ class CartController extends Controller
             ];
             $res=CartModel::insertGetId($data);
         }
-        if($res){
-            //减少库存
-                $goodsData['goods_stock']=$goodsData['goods_stock']-$buy_number;
-                $res=GoodsModel::where($where)->update($goodsData);
-            //添加成功
-                if($res){
-                    echo '添加成功';exit;
-                }
-        }
+        //添加成功
+            if($res){
+                header("refresh:2;url=/cartlist");
+                echo '添加成功';exit;
+            }
     }
 
     /**
@@ -116,18 +112,18 @@ class CartController extends Controller
         $cartGoodsData=CartModel::where($where)->first()->toArray();
         $res=CartModel::where($where)->delete();
         if($res){
-            //归还库存
-            $buy_number=$cartGoodsData['buy_number'];
-            $where=[
-              'goods_id'=>$goods_id
-            ];
-            $goodsData=GoodsModel::where($where)->first()->toArray();
-            $goodsData['goods_stock']=$goodsData['goods_stock']+$buy_number;
-            $res=GoodsModel::where($where)->update($goodsData);
-            if($res){
-                echo ('删除成功');
-                header("refresh:2;url=/cartlist");
-            }
+            echo ('删除成功');
+            header("refresh:1;url=/cartlist");
         }
+//        if($res){
+//            //归还库存
+//            $buy_number=$cartGoodsData['buy_number'];
+//            $where=[
+//              'goods_id'=>$goods_id
+//            ];
+//            $goodsData=GoodsModel::where($where)->first()->toArray();
+//            $goodsData['goods_stock']=$goodsData['goods_stock']+$buy_number;
+//            $res=GoodsModel::where($where)->update($goodsData);
+//        }
     }
 }

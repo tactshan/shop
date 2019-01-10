@@ -11,7 +11,7 @@ class GoodsController extends Controller
     //商品列表展示
     public function goodsList(){
         $info=GoodsModel::all();
-        $uid=$_COOKIE['uid'];
+        $uid=session()->get('uid');
         $data=[
             'info'=>$info,
             'uid'=>$uid

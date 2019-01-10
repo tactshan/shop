@@ -61,3 +61,12 @@ Route::get('/goodslist','Goods\GoodsController@goodsList');
 
 //生成订单
 Route::get('/orderadd','Order\OrderController@createOrder')->middleware('check.login');
+
+//订单详情
+Route::get('/orderdetail/{order_num}','Order\OrderController@orderDetail')->middleware('check.login');
+//我的订单
+Route::get('/allorders','Order\OrderController@allOrders')->middleware('check.login');
+
+
+
+

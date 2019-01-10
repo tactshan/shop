@@ -9,6 +9,7 @@
             <td>价格</td>
             <td>库存</td>
             <td>添加时间</td>
+            <td>操作</td>
         </tr>
         @foreach($info as $v)
             <tr>
@@ -17,8 +18,10 @@
                 <td>{{$v->goods_price}}</td>
                 <td>{{$v->goods_stock}}</td>
                 <td>{{date('Y-m-d H:i:s',$v->reg_time)}}</td>
+                <td><a href="/cartadd/{{$v->goods_id}}">商品详情</a></td>
             </tr>
         @endforeach
     </table>
     <button class="btn btn-danger" ><a href="/userquit" style="text-decoration: none;color: white;">Quit</a></button>
+    <button class="btn btn-danger"><a href="/allorders" style="text-decoration: none; color: #ffffff;">我的全部订单</a></button>
 @endsection

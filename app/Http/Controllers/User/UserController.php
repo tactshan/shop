@@ -100,7 +100,7 @@ class UserController extends Controller
            setcookie('token',$token,time()+86400,'','',false,true);
            $request->session()->put('u_token',$token);
            echo 'Login successfully';
-           header("refresh:2;url=/userlist");
+           header("refresh:2;url=/goodslist");
        }else{
            header("refresh:2;url=/userlogin");
            echo 'Email or Password is error';exit;
