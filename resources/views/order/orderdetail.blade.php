@@ -27,7 +27,7 @@
         <h3 id="amount">总计：</h3>
     </form>
     <button class="btn btn-danger"><a href="/goodslist" style="text-decoration: none; color: #ffffff;">继续购买</a></button>
-    <button class="btn btn-danger"><a href="#" style="text-decoration: none; color: #ffffff;">去付款</a></button>
+    <button class="btn btn-danger"><a href="/orderpay/{{$order_num}}" style="text-decoration: none; color: #ffffff;">去付款</a></button>
     <button class="btn btn-danger"><a href="/allorders" style="text-decoration: none; color: #ffffff;">我的全部订单</a></button>
 @endsection
 @section('footer')

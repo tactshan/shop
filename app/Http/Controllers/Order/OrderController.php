@@ -63,6 +63,7 @@ class OrderController extends Controller
             }
         }
     }
+    //订单详情页
     public function orderDetail($order_num){
         $uid=session()->get('uid');
         $showWhere=[
@@ -76,6 +77,7 @@ class OrderController extends Controller
         ];
         return view('order.orderdetail',$data);
     }
+    //所有订单
     public function allOrders(){
         $uid=session()->get('uid');
         $where=[
@@ -87,5 +89,18 @@ class OrderController extends Controller
           'data'=>$orderDate
         ];
         return view('order.allorders',$data);
+    }
+    //订单支付
+    public function orderPay($order_num){
+        //根据订单号查询订单数据
+        $where=[
+          'order_num'=>$order_num
+        ];
+        $data=OrderModel::where($where)->first();
+        $info=[
+          'info'=>$data
+        ];
+        //模拟支付
+       return view('order.orderpay',$info);
     }
 }

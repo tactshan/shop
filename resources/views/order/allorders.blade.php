@@ -17,6 +17,16 @@
                     <td>添加时间</td>
                     <td>{{date("Y-m-d H:i:s",$v->c_time)}}</td>
                 </tr>
+                <tr>
+                    <td>订单状态</td>
+                    @if ($v->order_status === 1)
+                        <td>待支付！</td>
+                    @elseif ($v->order_status ===2)
+                        <td>已支付！</td>
+                    @else
+                        <td>订单已取消！</td>
+                    @endif
+                </tr>
             </table>
         @endforeach
     </form>
