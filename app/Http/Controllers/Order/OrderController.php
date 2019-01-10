@@ -6,6 +6,7 @@ use App\Model\CartModel;
 use App\Model\GoodsModel;
 use App\Model\OrderDetailModel;
 use App\Model\OrderModel;
+use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -50,7 +51,6 @@ class OrderController extends Controller
         ];
         $res = OrderModel::insertGetId($data);
         //生成订单详情
-        unset($list['goods_stock']);
         $res2=OrderDetailModel::insert($list);
         if($res&&$res2){
             //减少库存
@@ -71,9 +71,12 @@ class OrderController extends Controller
             'order_num'=>$order_num
         ];
         $order_detail=OrderDetailModel::where($showWhere)->get();
+        $orderDate=OrderModel::where($showWhere)->first()->toArray();
+        $order_status=$orderDate['order_status'];
         $data=[
             'order_num'=>$order_num,
-            'info'=>$order_detail
+            'info'=>$order_detail,
+            'order_status'=>$order_status
         ];
         return view('order.orderdetail',$data);
     }
@@ -83,7 +86,7 @@ class OrderController extends Controller
         $where=[
           'user_id'=>$uid
         ];
-        $orderDate=OrderModel::where($where)->get();
+        $orderDate=OrderModel::where($where)->orderBy('c_time','desc')->get();
         $data=[
             'uid'=>$uid,
           'data'=>$orderDate
@@ -92,15 +95,76 @@ class OrderController extends Controller
     }
     //订单支付
     public function orderPay($order_num){
-        //根据订单号查询订单数据
+        echo '订单号：'.$order_num;echo '</br>';
+       echo '调用支付宝接口->用户付款->付款成功！';
+       //获取订单数据
+        $orderWhere=[
+          'order_num'=>$order_num
+        ];
+        $orderData=OrderModel::where($orderWhere)->first()->toArray();
+        $order_amount=$orderData['order_amount'];
+       //更改订单状态
         $where=[
           'order_num'=>$order_num
         ];
-        $data=OrderModel::where($where)->first();
-        $info=[
-          'info'=>$data
+        $data=[
+          'order_status'=>2
         ];
-        //模拟支付
-       return view('order.orderpay',$info);
+        $res=OrderModel::where($where)->update($data);
+        $uid=session()->get('uid');
+        //赠送积分
+        $userWhere=[
+            'uid'=>$uid
+        ];
+        $userData=UserModel::where($userWhere)->first()->toArray();
+        $userData['integral']=$userData['integral']+$order_amount;
+        UserModel::where($userWhere)->update($userData);
+        var_dump($res);
+    }
+    //取消订单
+    public function orderDel($order_num,$order_status){
+        if($order_status==2){
+            //调用支付宝退款接口
+        }
+        $uid=session()->get('uid');
+        //获取订单数据
+        $orderWhere=[
+            'order_num'=>$order_num
+        ];
+        $orderData=OrderModel::where($orderWhere)->first()->toArray();
+        $order_amount=$orderData['order_amount'];
+        //更改订单表
+        $where=[
+          'order_num'=>$order_num
+        ];
+        $data=[
+          'order_status'=>3
+        ];
+        $res=OrderModel::where($where)->update($data);
+        if($res!==false){
+            //归还库存
+            $order_detail=OrderDetailModel::where($where)->get()->toArray();
+            foreach($order_detail as $k=>$v){
+                $goodData=GoodsModel::where(['goods_id'=>$v['goods_id']])->first()->toArray();
+                $goodData['goods_stock']=$v['buy_number']+$goodData['goods_stock'];
+                $res2=GoodsModel::where(['goods_id'=>$v['goods_id']])->update($goodData);
+            }
+            //减积分
+            //赠送积分
+            $userWhere=[
+                'uid'=>$uid
+            ];
+            $userData=UserModel::where($userWhere)->first()->toArray();
+            $userData['integral']=$userData['integral']-$order_amount;
+            UserModel::where($userWhere)->update($userData);
+            if($res2){
+                if($order_status==1){
+                    echo '订单取消成功';
+                }else if($order_status==2){
+                    echo '退款成功！';
+                }
+                header("refresh:1;url='/allorders'");
+            }
+        }
     }
 }

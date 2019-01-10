@@ -75,8 +75,8 @@ class CartController extends Controller
         }
         //添加成功
             if($res){
-                header("refresh:2;url=/cartlist");
-                echo '添加成功';exit;
+                header("refresh:1;url=/cartlist");
+                echo '添加成功!跳转中......';exit;
             }
     }
 
@@ -115,15 +115,5 @@ class CartController extends Controller
             echo ('删除成功');
             header("refresh:1;url=/cartlist");
         }
-//        if($res){
-//            //归还库存
-//            $buy_number=$cartGoodsData['buy_number'];
-//            $where=[
-//              'goods_id'=>$goods_id
-//            ];
-//            $goodsData=GoodsModel::where($where)->first()->toArray();
-//            $goodsData['goods_stock']=$goodsData['goods_stock']+$buy_number;
-//            $res=GoodsModel::where($where)->update($goodsData);
-//        }
     }
 }

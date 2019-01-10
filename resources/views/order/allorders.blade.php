@@ -22,7 +22,7 @@
                     @if ($v->order_status === 1)
                         <td>待支付！</td>
                     @elseif ($v->order_status ===2)
-                        <td>已支付！</td>
+                        <td><font color="blue">已支付！</font></td>
                     @else
                         <td>订单已取消！</td>
                     @endif

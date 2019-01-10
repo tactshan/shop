@@ -68,6 +68,10 @@ Route::get('/orderdetail/{order_num}','Order\OrderController@orderDetail')->midd
 Route::get('/allorders','Order\OrderController@allOrders')->middleware('check.login');
 //订单支付
 Route::get('/orderpay/{order_num}','Order\OrderController@orderPay')->middleware('check.login');
+//取消订单
+Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDel')->middleware('check.login');
+
+
 
 
 
