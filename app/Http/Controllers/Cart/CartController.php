@@ -9,7 +9,11 @@ use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
-    //购物车添加
+    /**
+     * 购物车添加视图
+     * @param $goods_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function cartAdd($goods_id)
     {
         $where=[
@@ -22,10 +26,15 @@ class CartController extends Controller
         return view('cart.cartadd',$data);
 
     }
+
+    /**
+     * 购物车添加
+     * @param Request $request
+     */
     public function cartAddDo(Request $request){
         $goods_id=$request->input('goods_id');
         $buy_number=$request->input('buy_number');
-        $uid=$_COOKIE['uid'];
+        $uid=session()->get('uid');
         $session_token=$request->session()->get('u_token');
         $where=[
           'goods_id'=>$goods_id
@@ -74,10 +83,15 @@ class CartController extends Controller
                 }
         }
     }
-    //购物车列表展示
+
+    /**
+     * 购物车列表展示
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function cartList(Request $request)
     {
-        $uid=$_COOKIE['uid'];
+        $uid=session()->get('uid');
         $where=[
           'user_id'=>$uid
         ];
@@ -88,9 +102,13 @@ class CartController extends Controller
         ];
         return view('cart.cartlist',$cart_goods);
     }
-    //删除购物车
+
+    /**
+     * 删除购物车
+     * @param $goods_id
+     */
     public function delCartInfo($goods_id){
-        $uid=$_COOKIE['uid'];
+        $uid=session()->get('uid');
         $where=[
           'user_id'=>$uid,
           'goods_id'=>$goods_id
@@ -101,7 +119,7 @@ class CartController extends Controller
             //归还库存
             $buy_number=$cartGoodsData['buy_number'];
             $where=[
-              'godos_id'=>$goods_id
+              'goods_id'=>$goods_id
             ];
             $goodsData=GoodsModel::where($where)->first()->toArray();
             $goodsData['goods_stock']=$goodsData['goods_stock']+$buy_number;

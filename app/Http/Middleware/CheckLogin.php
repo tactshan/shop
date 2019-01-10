@@ -16,7 +16,7 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {
-        if(empty($_COOKIE['uid'])){
+        if(empty(session()->get('uid'))){
             header("refresh:2;url=/userlogin");
             exit('Please login ... ...');
         }else{

@@ -58,3 +58,6 @@ Route::get('/delcart/{goods_id}','Cart\CartController@delCartInfo')->middleware(
 
 //商品列表展示
 Route::get('/goodslist','Goods\GoodsController@goodsList');
+
+//生成订单
+Route::get('/orderadd','Order\OrderController@createOrder')->middleware('check.login');
