@@ -71,6 +71,9 @@ Route::get('/orderpay/{order_num}','Order\OrderController@orderPay')->middleware
 //取消订单
 Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDel')->middleware('check.login');
 
+////订单测试
+Route::get('/ordertest','Order\OrderController@orderTest');
+
 
 
 

@@ -9,6 +9,7 @@ use App\Model\OrderModel;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Client;
 
 class OrderController extends Controller
 {
@@ -166,5 +167,12 @@ class OrderController extends Controller
                 header("refresh:1;url='/allorders'");
             }
         }
+    }
+    //订单服务化
+    public function orderTest(){
+            $url='http://shop.order.com';
+            $client=new Client(['base_uri'=>$url,'timeout'=>2.0,]);
+            $response=$client->request('GET','/order.php');
+            echo $response->getBody();
     }
 }
