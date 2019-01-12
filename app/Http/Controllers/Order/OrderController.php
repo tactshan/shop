@@ -175,7 +175,4 @@ class OrderController extends Controller
             $response=$client->request('GET','/order.php');
             echo $response->getBody();
     }
-    public function test(){
-
-    }
 }
