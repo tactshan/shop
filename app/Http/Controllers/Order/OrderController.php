@@ -60,7 +60,7 @@ class OrderController extends Controller
                 CartModel::where(['user_id'=>session()->get('uid')])->delete();
                 header("refresh:0;url=/orderdetail/$order_num");
             }else{
-                exit('生成订单失败');
+                exit('生成订单失败.');
             }
         }
     }
