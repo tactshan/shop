@@ -178,11 +178,12 @@ class OrderController extends Controller
             }
         }
     }
+    
     //订单服务化
     public function orderTest(){
-            $url='http://shop.order.com';
-            $client=new Client(['base_uri'=>$url,'timeout'=>2.0,]);
-            $response=$client->request('GET','/order.php');
-            echo $response->getBody();
+        $url='http://shop.order.com';
+        $client=new Client(['base_uri'=>$url,'timeout'=>2.0,]);
+        $response=$client->request('GET','/order.php');
+        echo $response->getBody();
     }
 }
