@@ -74,6 +74,14 @@ Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDe
 ////订单测试
 Route::get('/ordertest','Order\OrderController@orderTest');
 
+//支付
+Route::get('/alipay','Pay\AlipayController@test');         //调用支付宝接口
+
+
+
+Route::get('/pay/o/{oid}','Pay\IndexController@order')->middleware('check.login.token');         //订单支付
+Route::post('/pay/alipay/notify','Pay\AlipayController@notify');        //支付宝支付 通知回调
+
 
 
 
