@@ -11,7 +11,8 @@ class AlipayController extends Controller
 {
     public $app_id = '2016092200571842';
     public $gate_way = 'https://openapi.alipaydev.com/gateway.do';
-    public $notify_url = 'http://shop.comcto.com/pay/alipay/notify';
+    public $notify_url = 'http://www.shop.com/pay/alipay/notify';
+    public $return_url = 'http://www.shop.com/pay/alipay/sync';
     public $rsaPrivateKeyFilePath = './key/priv.key';
 
     /**
@@ -32,17 +33,16 @@ class AlipayController extends Controller
         echo $response->getBody();
     }
 
-
     public function test($order_num)
     {
         $orderWhere=[
-            'order_num'=>$order_num
+        'order_num'=>$order_num
         ];
         $orderData=OrderModel::where($orderWhere)->first()->toArray();
 //业务请求参数
         $bizcont = [
             'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6), //订单信息
-            'out_trade_no'      => $orderData['order_num'],  //订单号
+            'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),  //订单号$orderData['order_num']
             'total_amount'      => $orderData['order_amount']/100,                 //金额
             'product_code'      => 'QUICK_WAP_WAY',  //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
         ];
@@ -55,6 +55,7 @@ class AlipayController extends Controller
             'sign_type'   => 'RSA2',
             'timestamp'   => date('Y-m-d H:i:s'), //发送请求时间
             'version'   => '1.0',                           //	调用的接口版本，固定为：1.0
+            'return_url' => $this->return_url,
             'notify_url'   => $this->notify_url,            //支付宝服务器主动通知商户服务器里指定的页面http/https路径。建议商户使用https
             'biz_content'   => json_encode($bizcont),       //业务请求参数的集合
         ];
@@ -76,7 +77,6 @@ class AlipayController extends Controller
     }
 
     protected function sign($data) {
-
         $priKey = file_get_contents($this->rsaPrivateKeyFilePath);
         $res = openssl_get_privatekey($priKey);
 
@@ -125,7 +125,6 @@ class AlipayController extends Controller
         return false;
     }
 
-
     /**
      * 转换字符集编码
      * @param $data
@@ -143,4 +142,28 @@ class AlipayController extends Controller
 
         return $data;
     }
+
+    /**支付宝同步通知回调*/
+    public function sync(){
+        $order_num=$_GET['out_trade_no'];
+        $orderWhere=[
+            'order_num'=>$order_num
+        ];
+        $orderData=OrderModel::where($orderWhere)->first();
+        //验证订单号
+        if(empty($orderData)){
+            echo '订单号有误!';exit;
+        }
+        $order_amount=$_GET['total_amount']*100;
+        //验证支付金额
+        if($order_amount!=$orderData->order_amount){
+            echo '定点金额有误！';exit;
+        }
+        //验签
+}
+    /**支付宝异步通知回调*/
+   public function notify(){
+
+    }
+
 }
