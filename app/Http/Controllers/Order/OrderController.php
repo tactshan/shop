@@ -60,7 +60,7 @@ class OrderController extends Controller
                 CartModel::where(['user_id'=>session()->get('uid')])->delete();
                 header("refresh:0;url=/orderdetail/$order_num");
             }else{
-                exit('生成订单失败');
+                exit('生成订单失败.');
             }
         }
     }
@@ -96,13 +96,23 @@ class OrderController extends Controller
     }
     //订单支付
     public function orderPay($order_num){
-        echo '订单号：'.$order_num;echo '</br>';
-       echo '调用支付宝接口->用户付款->付款成功！';
+        //支付宝支付
        //获取订单数据
         $orderWhere=[
           'order_num'=>$order_num
         ];
         $orderData=OrderModel::where($orderWhere)->first()->toArray();
+        if(empty($orderData)){
+            die("订单 ".$order_num. "不存在！");
+        }
+        $order_status=$orderData['order_status'];
+        if($order_status!=1){
+            die("此订单已被支付或订单异常。");
+        }
+
+
+
+
         $order_amount=$orderData['order_amount'];
        //更改订单状态
         $where=[
@@ -168,11 +178,12 @@ class OrderController extends Controller
             }
         }
     }
+    
     //订单服务化
     public function orderTest(){
-            $url='http://shop.order.com';
-            $client=new Client(['base_uri'=>$url,'timeout'=>2.0,]);
-            $response=$client->request('GET','/order.php');
-            echo $response->getBody();
+        $url='http://shop.order.com';
+        $client=new Client(['base_uri'=>$url,'timeout'=>2.0,]);
+        $response=$client->request('GET','/order.php');
+        echo $response->getBody();
     }
 }
