@@ -75,7 +75,7 @@ Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDe
 Route::get('/ordertest','Order\OrderController@orderTest');
 
 //支付
-Route::get('/alipay','Pay\AlipayController@test');         //调用支付宝接口
+Route::get('/alipay/{order_num}','Pay\AlipayController@test');         //调用支付宝接口
 
 
 

@@ -33,13 +33,17 @@ class AlipayController extends Controller
     }
 
 
-    public function test()
+    public function test($order_num)
     {
+        $orderWhere=[
+            'order_num'=>$order_num
+        ];
+        $orderData=OrderModel::where($orderWhere)->first()->toArray();
 //业务请求参数
         $bizcont = [
             'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6), //订单信息
-            'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),  //订单号
-            'total_amount'      => 0.01,    //金额
+            'out_trade_no'      => $orderData['order_num'],  //订单号
+            'total_amount'      => $orderData['order_amount']/100,                 //金额
             'product_code'      => 'QUICK_WAP_WAY',  //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
         ];
 //$data 公共参数
@@ -129,7 +133,6 @@ class AlipayController extends Controller
      * @return string
      */
     function characet($data, $targetCharset) {
-
         if (!empty($data)) {
             $fileType = 'UTF-8';
             if (strcasecmp($fileType, $targetCharset) != 0) {
