@@ -111,8 +111,6 @@ class OrderController extends Controller
         }
 
 
-
-
         $order_amount=$orderData['order_amount'];
        //更改订单状态
         $where=[

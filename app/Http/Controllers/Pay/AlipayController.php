@@ -5,32 +5,24 @@ namespace App\Http\Controllers\Pay;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\OrderModel;
+use App\Model\UserModel;
 use GuzzleHttp\Client;
 
 class AlipayController extends Controller
 {
-    public $app_id = '2016092200571842';
-    public $gate_way = 'https://openapi.alipaydev.com/gateway.do';
-    public $notify_url = 'http://www.shop.com/pay/alipay/notify';
-    public $return_url = 'http://www.shop.com/pay/alipay/sync';
+    public $app_id ;
+    public $gate_way;
+    public $notify_url;
+    public $return_url ;
     public $rsaPrivateKeyFilePath = './key/priv.key';
+    public $aliPubKey = './key/ali_pub.key';
 
-    /**
-     * 请求订单服务 处理订单逻辑
-     *
-     */
-    public function test0()
+    public function __construct()
     {
-        //
-        $url = 'http://vm.order.lening.com';
-       // $client = new Client();
-        $client = new Client([
-            'base_uri' => $url,
-            'timeout'  => 2.0,
-        ]);
-
-        $response = $client->request('GET', '/order.php');
-        echo $response->getBody();
+        $this->app_id=env('ALIPAY_APPID');
+        $this->gate_way=env('ALIPAY_GETWAY');
+        $this->notify_url=env('ALIPAY_NOTIFY_URL');
+        $this->return_url=env('AILIPAY_RETURN_URL');
     }
 
     public function test($order_num)
@@ -43,7 +35,7 @@ class AlipayController extends Controller
         $bizcont = [
             'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6), //订单信息
             'out_trade_no'      =>$orderData['order_num'] , //订单号'oid'.date('YmdHis').mt_rand(1111,2222)
-            'total_amount'      => $orderData['order_num']/100,                 //金额
+            'total_amount'      => $orderData['order_amount']/100,                 //金额
             'product_code'      => 'QUICK_WAP_WAY',  //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
         ];
 //$data 公共参数
@@ -158,12 +150,79 @@ class AlipayController extends Controller
             echo '定点金额有误！';exit;
         }
         //验签
-        $priKey = file_get_contents($this->rsaPrivateKeyFilePath);
-        $res = openssl_get_privatekey($priKey);
-        ($res) or die('您使用的私钥格式错误，请检查RSA私钥配置');
+//        if(!$this->verify($_GET)){
+//            echo 'Error';
+//        }
+//        var_dump($this->verify($_GET));
+
+        //处理订单信息
+        if(!$this->dealOrder($_GET)){
+            echo "Error";
+        };
+        echo 'ok';
 }
     /**支付宝异步通知回调*/
    public function notify(){
        echo 'ok';
+    }
+
+    //验签
+    function verify($params){
+        $sign = $params['sign'];
+        $params['sign_type'] = null;
+        $params['sign'] = null;
+
+        //读取公钥文件
+        $pubKey = file_get_contents($this->aliPubKey);
+        $pubKey = "-----BEGIN PUBLIC KEY-----\n" .
+            wordwrap($pubKey, 64, "\n", true) .
+            "\n-----END PUBLIC KEY-----";
+
+        //转换为openssl格式密钥
+        $res = openssl_get_publickey($pubKey);
+        ($res) or die('支付宝RSA公钥错误。请检查公钥文件格式是否正确');
+
+        //调用openssl内置方法验签，返回bool值
+        $result = (openssl_verify($this->getSignContent($params), base64_decode($sign), $res, OPENSSL_ALGO_SHA256)===1);
+        var_dump(openssl_free_key($res));exit;
+        var_dump($result);exit;
+        return $result;
+    }
+
+    //处理订单逻辑
+    function dealOrder($data){
+       $order_num=$data['out_trade_no'];
+        $orderWhere=[
+            'order_num'=>$order_num
+        ];
+        $orderData=OrderModel::where($orderWhere)->first()->toArray();
+        if(empty($orderData)){
+            die("订单 ".$order_num. "不存在！");
+        }
+        $order_status=$orderData['order_status'];
+        if($order_status!=1){
+            die("此订单已被支付或订单异常。");
+        }
+
+        $order_amount=$orderData['order_amount'];
+        //更改订单状态
+        $where=[
+            'order_num'=>$order_num
+        ];
+        $data=[
+            'order_status'=>2
+        ];
+        $res=OrderModel::where($where)->update($data);
+        $uid=session()->get('uid');
+        //赠送积分
+        $userWhere=[
+            'uid'=>$uid
+        ];
+        $userData=UserModel::where($userWhere)->first()->toArray();
+        $userData['integral']=$userData['integral']+$order_amount;
+        $res2=UserModel::where($userWhere)->update($userData);
+        if($res&&$res2){
+            return true;
+        }
     }
 }
