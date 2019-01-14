@@ -42,7 +42,7 @@ class AlipayController extends Controller
 //业务请求参数
         $bizcont = [
             'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6), //订单信息
-            'out_trade_no'      => 'oid'.date('YmdHis').mt_rand(1111,2222),  //订单号$orderData['order_num']
+            'out_trade_no'      =>$orderData['order_num'] , //订单号'oid'.date('YmdHis').mt_rand(1111,2222)
             'total_amount'      => $orderData['order_amount']/100,                 //金额
             'product_code'      => 'QUICK_WAP_WAY',  //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
         ];
@@ -160,10 +160,12 @@ class AlipayController extends Controller
             echo '定点金额有误！';exit;
         }
         //验签
+        $priKey = file_get_contents($this->rsaPrivateKeyFilePath);
+        $res = openssl_get_privatekey($priKey);
+        ($res) or die('您使用的私钥格式错误，请检查RSA私钥配置');
 }
     /**支付宝异步通知回调*/
    public function notify(){
-
+       echo 'ok';
     }
-
 }
