@@ -150,19 +150,17 @@ class AlipayController extends Controller
             echo '定点金额有误！';exit;
         }
         //验签
-//        if(!$this->verify($_GET)){
-//            echo 'Error';
-//        }
-//        var_dump($this->verify($_GET));
-
-        //处理订单信息
-        if(!$this->dealOrder($_GET)){
-            echo "Error";exit;
-        };
+        if(!$this->verify($_GET)){
+            echo 'Error';exit;
+        }
         echo 'ok';
 }
     /**支付宝异步通知回调*/
    public function notify(){
+        //处理订单信息
+        if(!$this->dealOrder($_POST)){
+            echo "Error";exit;
+        };
        $data = json_encode($_POST);
        $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
        //记录日志
