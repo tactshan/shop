@@ -153,6 +153,7 @@ class AlipayController extends Controller
         if(!$this->verify($_GET)){
             echo 'Error';exit;
         }
+
         echo 'ok';
 }
     /**支付宝异步通知回调*/
@@ -185,8 +186,6 @@ class AlipayController extends Controller
 
         //调用openssl内置方法验签，返回bool值
         $result = (openssl_verify($this->getSignContent($params), base64_decode($sign), $res, OPENSSL_ALGO_SHA256)===1);
-//        var_dump(openssl_free_key($res));exit;
-//        var_dump($result);exit;
         return $result;
     }
 
@@ -219,8 +218,8 @@ class AlipayController extends Controller
         $userWhere=[
             'uid'=>$uid
         ];
-        $userData=UserModel::where($userWhere)->first()->toArray();
-        $userData['integral']=$userData['integral']+$order_amount;
+        $userData=UserModel::where($userWhere)->first();
+        $userData->integral=$userData->integral+$order_amount;
         $res2=UserModel::where($userWhere)->update($userData);
         if($res&&$res2){
             return true;
