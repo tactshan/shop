@@ -23,18 +23,21 @@ class CrontabController extends Controller
         }
         $orderInfo=$orderInfo->toArray();
         var_dump($orderInfo);
-//        $res=false;
-//        foreach ($orderInfo as $k=>$v){
-//            if($v['order_status']==1){
-//                if(time()-$v['c_time'] > 300){
-//                    $Orderwhere=['order_num'=>$v['order_num']];
-//                    $data=[
-//                        'order_status'=>3
-//                    ];
-//                    $res=OrderModel::where($Orderwhere)->update($data);
-//                }
-//            }
-//        }
+        $res=false;
+        foreach ($orderInfo as $k=>$v){
+            echo '1'."\n";
+            if($v['order_status']==1){
+                echo '2'."\n";
+                if(time()-$v['c_time'] > 300){
+                    echo '3'."\n";
+                    $Orderwhere=['order_num'=>$v['order_num']];
+                    $data=[
+                        'order_status'=>3
+                    ];
+                    $res=OrderModel::where($Orderwhere)->update($data);
+                }
+            }
+        }
 //        if($res!==false){
 //            echo "Success"."\n";
 //        }else{
