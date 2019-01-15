@@ -24,7 +24,7 @@ class CrontabController extends Controller
         $res=false;
         foreach ($orderInfo as $k=>$v){
             if($v->order_status==1){
-                if(time()-$v['c_time'] > 300){
+                if(time()-$v->c_time > 300){
                     $Orderwhere=['order_num'=>$v->order_num];
                     $data=[
                         'order_status'=>3
