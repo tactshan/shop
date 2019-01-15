@@ -19,13 +19,14 @@ class CrontabController extends Controller
         ];
         $orderInfo=OrderModel::where($where)->get();
         if(empty($orderInfo)){
-            echo 'NULL';exit;
+            echo ('还没有下单');exit;
         }
+        $orderInfo=$orderInfo->toArray();
         $res=false;
         foreach ($orderInfo as $k=>$v){
-            if($v->order_status==1){
-                if(time()-$v->c_time > 300){
-                    $Orderwhere=['order_num'=>$v->order_num];
+            if($v['order_status']==1){
+                if(time()-$v['c_time'] > 300){
+                    $Orderwhere=['order_num'=>$v['order_num']];
                     $data=[
                         'order_status'=>3
                     ];
