@@ -17,7 +17,7 @@ class CrontabController extends Controller
         $where=[
             'uid'=>$uid
         ];
-        $orderInfo=where($where)->get();
+        $orderInfo=OrderModel::where($where)->get();
         if(empty($orderInfo)){
             exit('还没有下单');
         }
