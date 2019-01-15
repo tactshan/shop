@@ -19,24 +19,25 @@ class CrontabController extends Controller
         ];
         $orderInfo=OrderModel::where($where)->get();
         if(empty($orderInfo)){
-            exit('还没有下单');
+            echo 'NULL';exit;
         }
+        var_dump($orderInfo);exit;
 //        $res=false;
-        foreach ($orderInfo as $k=>$v){
-            if($v['order_status']==1){
-                echo '1';
-                if(time()-$v['c_time'] > 300){
-                    echo '2';
-                    $Orderwhere=['order_num'=>$v['order_num']];
-                    $data=[
-                        'order_status'=>3
-                    ];
-                    $res=OrderModel::where($Orderwhere)->update($data);
-                    var_dump($res);
-                }
-            }
-        }
-        echo '3';
+//        foreach ($orderInfo as $k=>$v){
+//            if($v['order_status']==1){
+//                echo '1';
+//                if(time()-$v['c_time'] > 300){
+//                    echo '2';
+//                    $Orderwhere=['order_num'=>$v['order_num']];
+//                    $data=[
+//                        'order_status'=>3
+//                    ];
+//                    $res=OrderModel::where($Orderwhere)->update($data);
+//                    var_dump($res);
+//                }
+//            }
+//        }
+//        echo '3';
 //        var_dump($res);
 //        if($res!==false){
 //            echo "Success"."\n";
