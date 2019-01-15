@@ -83,6 +83,9 @@ Route::get('/pay/o/{oid}','Pay\IndexController@order')->middleware('check.login.
 Route::post('/pay/alipay/notify','Pay\AlipayController@notify');        //支付宝支付 通知回调
 Route::get('/pay/alipay/sync','Pay\AlipayController@sync');        //支付宝支付 通知回调
 
+//计划任务
+Route::get('/pay/delete','Pay\CrontabController@deleteOrder');
+
 
 
 
