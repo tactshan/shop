@@ -157,7 +157,7 @@ class AlipayController extends Controller
 
         //处理订单信息
         if(!$this->dealOrder($_GET)){
-            echo "Error";
+            echo "Error";exit;
         };
         echo 'ok';
 }
@@ -187,8 +187,8 @@ class AlipayController extends Controller
 
         //调用openssl内置方法验签，返回bool值
         $result = (openssl_verify($this->getSignContent($params), base64_decode($sign), $res, OPENSSL_ALGO_SHA256)===1);
-        var_dump(openssl_free_key($res));exit;
-        var_dump($result);exit;
+//        var_dump(openssl_free_key($res));exit;
+//        var_dump($result);exit;
         return $result;
     }
 
