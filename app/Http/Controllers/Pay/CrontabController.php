@@ -23,9 +23,13 @@ class CrontabController extends Controller
         }
         $orderInfo=$orderInfo->toArray();
         $res=false;
+        echo '1';
         foreach ($orderInfo as $k=>$v){
+            echo '2';
             if($v['order_status']==1){
+                echo '3';
                 if(time()-$v['c_time'] > 300){
+                    echo '4';
                     $Orderwhere=['order_num'=>$v['order_num']];
                     $data=[
                         'order_status'=>3
@@ -37,7 +41,7 @@ class CrontabController extends Controller
         if($res!==false){
             echo "Success"."\n";
         }else{
-            echo 'Error->aaa';exit;
+            echo 'Error';exit;
         }
 
     }
