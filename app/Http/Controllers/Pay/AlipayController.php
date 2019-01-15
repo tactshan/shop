@@ -215,7 +215,8 @@ class AlipayController extends Controller
             'order_status'=>2
         ];
         $res=OrderModel::where($where)->update($data);
-        $uid=session()->get('uid');
+        //根据订单号获查询订单表获取到用户id
+        $uid=$orderData->user_id;
         //赠送积分
         $userWhere=[
             'uid'=>$uid
