@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pay;
 use Illuminate\Http\Request;
 use App\Model\OrderModel;
 use App\Model\OrderDetailModel;
+use App\Http\Controllers\Controller;
 
 class CrontabController extends Controller
 {
@@ -23,17 +24,17 @@ class CrontabController extends Controller
         foreach ($orderInfo as $k=>$v){
             if($v['order_status']==1){
                 if(time()-$v['c_time'] > 300){
-                    $where=['order_num'=>$v['order_num']];
+                    $Orderwhere=['order_num'=>$v['order_num']];
                     $data=[
                         'order_status'=>3
                     ];
-                    $res=OrderModel::where($where)->update($data);
-                    $detailInfo=OrderDetailModel::where($where)->get();
+                    $res=OrderModel::where($Orderwhere)->update($data);
+                    $detailInfo=OrderDetailModel::where($Orderwhere)->get();
                     foreach ($detailInfo as $k=>$v) {
                         $info=[
                             'status'=>2
                         ];
-                        $res2=OrderDetailModel::where($where)->update($info);
+                        $res2=OrderDetailModel::where($Orderwhere)->update($info);
                     }
                 }
             }
