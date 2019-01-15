@@ -153,7 +153,6 @@ class AlipayController extends Controller
         if(!$this->verify($_GET)){
             echo 'Error';exit;
         }
-
         echo 'ok';
 }
     /**支付宝异步通知回调*/
@@ -174,8 +173,6 @@ class AlipayController extends Controller
            $log_str .= " Sign OK!<<<<< \n\n";
            file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
        }
-
-
        //处理订单信息
        if(!$this->dealOrder($_POST)){
            echo "Error";exit;
