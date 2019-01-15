@@ -22,14 +22,10 @@ class CrontabController extends Controller
             echo ('还没有下单');exit;
         }
         $orderInfo=$orderInfo->toArray();
-        var_dump($orderInfo);
         $res=false;
         foreach ($orderInfo as $k=>$v){
-            echo '1'."\n";
             if($v['order_status']==1){
-                echo '2'."\n";
                 if(time()-$v['c_time'] > 300){
-                    echo '3'."\n";
                     $Orderwhere=['order_num'=>$v['order_num']];
                     $data=[
                         'order_status'=>3
@@ -38,11 +34,11 @@ class CrontabController extends Controller
                 }
             }
         }
-//        if($res!==false){
-//            echo "Success"."\n";
-//        }else{
-//            echo 'Error';exit;
-//        }
+        if($res!==false){
+            echo "Success"."\n";
+        }else{
+            echo 'Error';exit;
+        }
 
     }
 
