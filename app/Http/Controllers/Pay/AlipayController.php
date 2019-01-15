@@ -221,8 +221,8 @@ class AlipayController extends Controller
         $userWhere=[
             'uid'=>$uid
         ];
-        $userData=UserModel::where($userWhere)->first();
-        $userData->integral=$userData->integral+$order_amount;
+        $userData=UserModel::where($userWhere)->first()->roArray();
+        $userData['integral']=$userData['integral']+$order_amount;
         $res2=UserModel::where($userWhere)->update($userData);
         if($res&&$res2){
             return true;
