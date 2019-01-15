@@ -158,14 +158,16 @@ class AlipayController extends Controller
 }
     /**支付宝异步通知回调*/
    public function notify(){
-        //处理订单信息
-        if(!$this->dealOrder($_POST)){
-            echo "Error";exit;
-        };
+
        $data = json_encode($_POST);
        $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
        //记录日志
        file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
+
+       //处理订单信息
+       if(!$this->dealOrder($_POST)){
+           echo "Error";exit;
+       };
     }
 
     //验签
