@@ -15,7 +15,7 @@ class CrontabController extends Controller
     public function deleteOrder(Request $request){
         $uid=$request->session()->get('uid');
         $where=[
-            'uid'=>$uid
+            'user_id'=>$uid
         ];
         $orderInfo=OrderModel::where($where)->get();
         if(empty($orderInfo)){
