@@ -21,6 +21,7 @@ class CrontabController extends Controller
         if(empty($orderInfo)){
             exit('还没有下单');
         }
+        $res=false;
         foreach ($orderInfo as $k=>$v){
             if($v['order_status']==1){
                 if(time()-$v['c_time'] > 300){
@@ -32,7 +33,7 @@ class CrontabController extends Controller
                 }
             }
         }
-        if($res){
+        if($res!==false){
             echo "Success"."\n";
         }else{
             echo 'Error';exit;
