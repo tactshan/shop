@@ -29,17 +29,15 @@ class CrontabController extends Controller
                         'order_status'=>3
                     ];
                     $res=OrderModel::where($Orderwhere)->update($data);
-                    $detailInfo=OrderDetailModel::where($Orderwhere)->get();
-                    foreach ($detailInfo as $k=>$v) {
-                        $info=[
-                            'status'=>2
-                        ];
-                        $res2=OrderDetailModel::where($Orderwhere)->update($info);
-                    }
                 }
             }
         }
-        echo "success"."\n";
+        if($res){
+            echo "Success"."\n";
+        }else{
+            echo 'Error';exit;
+        }
+
     }
 
 
