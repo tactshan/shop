@@ -37,7 +37,7 @@ class CrontabController extends Controller
         if($res!==false){
             echo "Success"."\n";
         }else{
-            echo 'Error';exit;
+            echo 'Error->aaa';exit;
         }
 
     }
