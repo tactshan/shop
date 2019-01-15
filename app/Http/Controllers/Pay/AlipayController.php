@@ -163,7 +163,10 @@ class AlipayController extends Controller
 }
     /**支付宝异步通知回调*/
    public function notify(){
-       echo 'ok';
+       $data = json_encode($_POST);
+       $log_str = '>>>> '.date('Y-m-d H:i:s') . $data . "<<<<\n\n";
+       //记录日志
+       file_put_contents('logs/alipay.log',$log_str,FILE_APPEND);
     }
 
     //验签
