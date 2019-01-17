@@ -16,7 +16,7 @@ class CrontabController extends Controller
 
         $orderInfo=OrderModel::all();
         if(empty($orderInfo)){
-            echo ('还没有下单');exit;
+            echo ('还没有下单.');exit;
         }
         $orderInfo=$orderInfo->toArray();
         $res=false;
