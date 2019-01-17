@@ -13,10 +13,7 @@ class CrontabController extends Controller
      * 删除订单
      */
     public function deleteOrder(Request $request){
-//        $uid=$request->session()->get('uid');
-//        $where=[
-//            'user_id'=>$uid
-//        ];
+
         $orderInfo=OrderModel::all();
         if(empty($orderInfo)){
             echo ('还没有下单');exit;
