@@ -19,7 +19,7 @@ class CheckLogin
     {
         $checkLogin=Auth::check();
         if(!$checkLogin){
-            echo '请先登录';
+            echo '请先登录1';
             header("Location:http://www.shop.com/login");exit;
         }
 //        if($checkLogin==false){
