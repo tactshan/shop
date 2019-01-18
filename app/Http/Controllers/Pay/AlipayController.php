@@ -35,7 +35,7 @@ class AlipayController extends Controller
         $bizcont = [
             'subject'           => 'ancsd'. mt_rand(1111,9999).str_random(6), //订单信息
             'out_trade_no'      =>$orderData['order_num'] , //订单号'oid'.date('YmdHis').mt_rand(1111,2222)
-            'total_amount'      => $orderData['order_amount']/100,                 //金额
+            'total_amount'      => $orderData['order_amount'],                 //金额
             'product_code'      => 'QUICK_WAP_WAY',  //销售产品码，商家和支付宝签约的产品码，为固定值QUICK_MSECURITY_PAY
         ];
 //$data 公共参数
