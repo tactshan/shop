@@ -144,7 +144,7 @@ class AlipayController extends Controller
         if(empty($orderData)){
             echo '订单号有误!';exit;
         }
-        $order_amount=$_GET['total_amount']*100;
+        $order_amount=$_GET['total_amount'];
         //验证支付金额
         if($order_amount!=$orderData->order_amount){
             echo '定点金额有误！';exit;
