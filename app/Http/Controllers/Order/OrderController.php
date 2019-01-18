@@ -10,13 +10,14 @@ use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     //生成订单
     public function createOrder(){
         //根据用户id查询该用户下的购物车信息
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         $where=[
           'user_id'=>$uid
         ];
@@ -66,7 +67,7 @@ class OrderController extends Controller
     }
     //订单详情页
     public function orderDetail($order_num){
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         $showWhere=[
             'user_id'=>$uid,
             'order_num'=>$order_num
@@ -83,7 +84,7 @@ class OrderController extends Controller
     }
     //所有订单
     public function allOrders(){
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         $where=[
           'user_id'=>$uid
         ];
@@ -120,7 +121,7 @@ class OrderController extends Controller
           'order_status'=>2
         ];
         $res=OrderModel::where($where)->update($data);
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         //赠送积分
         $userWhere=[
             'uid'=>$uid
@@ -135,7 +136,7 @@ class OrderController extends Controller
         if($order_status==2){
             //调用支付宝退款接口
         }
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         //获取订单数据
         $orderWhere=[
             'order_num'=>$order_num
@@ -176,7 +177,6 @@ class OrderController extends Controller
             }
         }
     }
-    
     //订单服务化
     public function orderTest(){
         $url='http://shop.order.com';
