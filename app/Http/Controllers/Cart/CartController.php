@@ -6,6 +6,7 @@ use App\Model\CartModel;
 use App\Model\GoodsModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -34,7 +35,7 @@ class CartController extends Controller
     public function cartAddDo(Request $request){
         $goods_id=$request->input('goods_id');
         $buy_number=$request->input('buy_number');
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         $session_token=$request->session()->get('u_token');
         $where=[
           'goods_id'=>$goods_id
@@ -87,7 +88,7 @@ class CartController extends Controller
      */
     public function cartList(Request $request)
     {
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         $where=[
           'user_id'=>$uid
         ];
@@ -104,7 +105,7 @@ class CartController extends Controller
      * @param $goods_id
      */
     public function delCartInfo($goods_id){
-        $uid=session()->get('uid');
+        $uid=Auth::id();
         $where=[
           'user_id'=>$uid,
           'goods_id'=>$goods_id
