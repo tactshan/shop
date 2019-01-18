@@ -64,7 +64,7 @@ class OrderController extends Controller
             //减少库存
             if($res){
                 //清空购物车
-                CartModel::where(['user_id'=>session()->get('uid')])->delete();
+                CartModel::where(['user_id'=>$uid])->delete();
                 header("refresh:0;url=/orderdetail/$order_num");
             }else{
                 exit('生成订单失败.');
