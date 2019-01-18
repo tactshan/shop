@@ -114,7 +114,6 @@ class UserController extends Controller
      *
      */
     public function quit(){
-        session()->pull('uid');
-        header("refresh:0;url=/userlogin");
+        header("refresh:0;url=/home");
     }
 }
