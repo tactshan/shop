@@ -92,3 +92,7 @@ Route::get('/pay/delete','Pay\CrontabController@deleteOrder');
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
