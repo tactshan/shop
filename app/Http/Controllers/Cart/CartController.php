@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * 购物车添加视图
      * @param $goods_id
@@ -33,7 +38,6 @@ class CartController extends Controller
      * @param Request $request
      */
     public function cartAddDo(Request $request){
-        $this->middleware('auth');
         $goods_id=$request->input('goods_id');
         $buy_number=$request->input('buy_number');
         $uid=Auth::id();
