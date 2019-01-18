@@ -14,7 +14,7 @@
             <tr>
                 <td>{{$v->goods_id}}</td>
                 <td>{{$v->goods_name}}</td>
-                <td>{{$v->goods_price/100}}</td>
+                <td>{{$v->goods_price}}</td>
                 <td>{{$v->goods_stock}}</td>
                 <td><a href="/cartadd/{{$v->goods_id}}">商品信息</a></td>
             </tr>

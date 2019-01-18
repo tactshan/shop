@@ -12,7 +12,7 @@
                 </tr>
                 <tr>
                     <td>单价</td>
-                    <td>{{$v->goods_price /100}}￥</td>
+                    <td>{{$v->goods_price}}￥</td>
                 </tr>
                 <tr>
                     <td>购买数量</td>
@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <td>小计</td>
-                    <td class="amount">{{$v->buy_number*$v->goods_price /100}}￥</td>
+                    <td class="amount">{{$v->buy_number*$v->goods_price}}￥</td>
                 </tr>
             </table>
         @endforeach

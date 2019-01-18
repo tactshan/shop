@@ -11,7 +11,7 @@
                 </tr>
                 <tr>
                     <td>订单总价</td>
-                    <td>{{$v->order_amount /100}}￥</td>
+                    <td>{{$v->order_amount}}￥</td>
                 </tr>
                 <tr>
                     <td>添加时间</td>

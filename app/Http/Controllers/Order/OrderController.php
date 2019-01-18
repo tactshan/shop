@@ -52,7 +52,7 @@ class OrderController extends Controller
         //生成订单
         $data = [
             'order_num'      => $order_num,
-            'user_id'           => session()->get('uid'),
+            'user_id'           => $uid,
             'c_time'      => time(),
             'order_amount'  => $order_amount
         ];

@@ -48,7 +48,7 @@ class GoodsController extends Controller
     {
         $form = new Form(new GoodsModel());
         $form->text('goods_name', '商品名称');
-        $form->ckeditor('content');
+//        $form->ckeditor('content');
         $form->number('goods_stock', '库存');
         $form->currency('goods_price', '价格')->symbol('¥');
         return $form;

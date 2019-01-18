@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <h1>{{$goodsInfo->goods_name}}</h1>
-        <span> 价格： {{$goodsInfo->goods_price / 100}}</span>
+        <span> 价格： {{$goodsInfo->goods_price}}</span>
         <form class="form-inline" method="post" action="/cartadd">
             <input type="hidden" name="goods_id" value="{{$goodsInfo->goods_id}}">
             {{csrf_field()}}
