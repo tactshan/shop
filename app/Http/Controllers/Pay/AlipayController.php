@@ -230,7 +230,7 @@ class AlipayController extends Controller
         $uid=$orderData['user_id'];
         //赠送积分
         $userWhere=[
-            'uid'=>$uid
+            'id'=>$uid
         ];
         $userData=UserModel::where($userWhere)->first()->toArray();
         $userData['integral']=$userData['integral']+$order_amount;
