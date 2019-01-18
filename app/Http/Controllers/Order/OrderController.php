@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //生成订单
     public function createOrder(){
         //根据用户id查询该用户下的购物车信息

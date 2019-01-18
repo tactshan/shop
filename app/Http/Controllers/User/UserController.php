@@ -15,6 +15,8 @@ class UserController extends Controller
      */
     public function usershow(Request $request)
     {
+        $this->middleware('auth');
+
         $info=UserModel::all();
         $uid=session()->get('uid');
 	        $data=[

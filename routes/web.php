@@ -41,7 +41,7 @@ Route::get('/userreg','User\UserController@reg');
 Route::post('/userreg','User\UserController@doReg');
 
 //列表展示
-Route::get('/userlist','User\UserController@usershow')->middleware('check.login');
+Route::get('/userlist','User\UserController@usershow');
 //登录
 Route::get('/userlogin','User\UserController@loginview');
 Route::post('/userlogin','User\UserController@userlogin');
@@ -49,27 +49,27 @@ Route::post('/userlogin','User\UserController@userlogin');
 Route::get('/userquit','User\UserController@quit');
 
 //购物车列表
-Route::get('/cartlist','Cart\CartController@cartList')->middleware('check.login');
+Route::get('/cartlist','Cart\CartController@cartList');
 //购物车添加
-Route::get('/cartadd/{goods_id}','Cart\CartController@cartAdd')->middleware('check.login');
-Route::post('/cartadd','Cart\CartController@cartAddDo')->middleware('check.login');
+Route::get('/cartadd/{goods_id}','Cart\CartController@cartAdd');
+Route::post('/cartadd','Cart\CartController@cartAddDo');
 //删除购物车数据
-Route::get('/delcart/{goods_id}','Cart\CartController@delCartInfo')->middleware('check.login');
+Route::get('/delcart/{goods_id}','Cart\CartController@delCartInfo');
 
 //商品列表展示
 Route::get('/goodslist','Goods\GoodsController@goodsList');
 
 //生成订单
-Route::get('/orderadd','Order\OrderController@createOrder')->middleware('check.login');
+Route::get('/orderadd','Order\OrderController@createOrder');
 
 //订单详情
-Route::get('/orderdetail/{order_num}','Order\OrderController@orderDetail')->middleware('check.login');
+Route::get('/orderdetail/{order_num}','Order\OrderController@orderDetail');
 //我的订单
-Route::get('/allorders','Order\OrderController@allOrders')->middleware('check.login');
+Route::get('/allorders','Order\OrderController@allOrders');
 //订单支付
-Route::get('/orderpay/{order_num}','Order\OrderController@orderPay')->middleware('check.login');
+Route::get('/orderpay/{order_num}','Order\OrderController@orderPay');
 //取消订单
-Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDel')->middleware('check.login');
+Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDel');
 
 ////订单测试
 Route::get('/ordertest','Order\OrderController@orderTest');
@@ -85,12 +85,6 @@ Route::get('/pay/alipay/sync','Pay\AlipayController@sync');        //支付宝�
 
 //计划任务
 Route::get('/pay/delete','Pay\CrontabController@deleteOrder');
-
-
-
-
-
-
 
 
 Auth::routes();
