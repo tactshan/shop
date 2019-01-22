@@ -10,7 +10,7 @@ class GoodsController extends Controller
 {
     //商品列表展示
     public function goodsList(){
-        $info=GoodsModel::all();
+        $info=GoodsModel::paginate(3);
         $uid=session()->get('uid');
         $data=[
             'info'=>$info,

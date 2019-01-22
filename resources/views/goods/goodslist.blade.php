@@ -20,6 +20,7 @@
             </tr>
         @endforeach
     </table>
+    {{$info->links()}}
     <button class="btn btn-danger" ><a href="/userquit" style="text-decoration: none;color: white;">Quit</a></button>
     <button class="btn btn-danger"><a href="/allorders" style="text-decoration: none; color: #ffffff;">我的全部订单</a></button>
 @endsection
