@@ -90,3 +90,7 @@ Route::get('/pay/delete','Pay\CrontabController@deleteOrder');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//文件上传
+Route::get('/upload','Upload\UploadController@upload');
+Route::post('/pdfadd','Upload\UploadController@pdfadd');
