@@ -2,6 +2,12 @@
 
 @section('content')
     <h1><font>UID:{{$uid}} Welcome back!</font></h1>
+    {{--<form action="/goodslist" method="post">--}}
+{{--        {{csrf_field()}}--}}
+        <input type="text" name="keys" id="keys" value={{$key}}>
+        {{--<input type="submit" value="搜索">--}}
+        <button ><a href="" id="seet">搜索</a></button>
+    {{--</form>--}}
     <table border="1" class="table table-bordered">
         <tr>
             <td>商品id</td>
@@ -23,4 +29,32 @@
     {{$info->links()}}
     <button class="btn btn-danger" ><a href="/userquit" style="text-decoration: none;color: white;">Quit</a></button>
     <button class="btn btn-danger"><a href="/allorders" style="text-decoration: none; color: #ffffff;">我的全部订单</a></button>
+@endsection
+@section('footer')
+    @parent
+    <script>
+        $(function () {
+            $('#seet').click(function () {
+                var _this=$(this)
+                var _key=$('#keys').val()
+                var _href=_this.attr('href',"/goodslist?key="+_key)
+            })
+            $('a').each(function () {
+                var _key=$('#keys').val()
+                if(_key!=''){
+                    var _this=$(this)
+                    if(_this.prop('rel')=='next'){
+                        var _href=_this.attr('href')
+                        var test=_href+"&&key="+_key
+                        _this.attr('href',test)
+                    }
+                    if(_this.prop('rel')=='prev'){
+                        var _href=_this.attr('href')
+                        var test=_href+"&&key="+_key
+                        _this.attr('href',test)
+                    }
+                }
+            })
+        })
+    </script>
 @endsection
