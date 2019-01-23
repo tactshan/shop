@@ -2,12 +2,10 @@
 
 @section('content')
     <h1><font>UID:{{$uid}} Welcome back!</font></h1>
-    {{--<form action="/goodslist" method="post">--}}
-{{--        {{csrf_field()}}--}}
+
         <input type="text" name="keys" id="keys" value={{$key}}>
-        {{--<input type="submit" value="搜索">--}}
         <button ><a href="" id="seet">搜索</a></button>
-    {{--</form>--}}
+
     <table border="1" class="table table-bordered">
         <tr>
             <td>商品id</td>

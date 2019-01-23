@@ -58,7 +58,6 @@ Route::get('/delcart/{goods_id}','Cart\CartController@delCartInfo');
 
 //商品列表展示
 Route::get('/goodslist/{keys?}','Goods\GoodsController@goodsList');
-//Route::post('/goodslist','Goods\GoodsController@goodsList');
 
 
 //生成订单
