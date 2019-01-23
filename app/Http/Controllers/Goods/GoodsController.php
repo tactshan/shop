@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Goods;
 
 use App\Model\GoodsModel;
+use Illuminate\Filesystem\Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\cache;
 
 class GoodsController extends Controller
 {
@@ -16,18 +18,17 @@ class GoodsController extends Controller
         }else{
             $key='';
         }
-
         $cacheKey='info';
 
-        if(Redis::exists($cacheKey)){
-            $res = Redis::get($cacheKey);
+        if(Cache::exists($cacheKey)){
+            $res = Cache::get($cacheKey);
             $info = unserialize($res);
         }else{
             $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2);
         }
 
         //存redis
-        Redis::setex($cacheKey, 600, serialize($info));
+        Cache::setex($cacheKey, 600, serialize($info));
 
         $uid=session()->get('uid');
         $data=[
