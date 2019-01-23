@@ -16,7 +16,19 @@ class GoodsController extends Controller
         }else{
             $key='';
         }
-        $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2);
+
+        $cacheKey='info';
+
+        if(Redis::exists($cacheKey)){
+            $res = Redis::get($cacheKey);
+            $info = unserialize($res);
+        }else{
+            $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2);
+        }
+
+        //存redis
+        Redis::setex($cacheKey, 600, serialize($info));
+
         $uid=session()->get('uid');
         $data=[
             'info'=>$info,
