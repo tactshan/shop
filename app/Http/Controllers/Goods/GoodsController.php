@@ -19,18 +19,18 @@ class GoodsController extends Controller
         }else{
             $key='';
         }
+//
+//        $cacheKey='info';
 
-        $cacheKey='info';
-
-        if(Cache::exists($cacheKey)){
-            $res = Cache::get($cacheKey);
-            $info = unserialize($res);
-        }else{
+//        if(Cache::exists($cacheKey)){
+//            $res = Cache::get($cacheKey);
+//            $info = unserialize($res);
+//        }else{
             $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2);
-        }
+//        }
 
-        //存redis
-        Cache::setex($cacheKey, 10, serialize($info));
+//        //存redis
+//        Cache::setex($cacheKey, 10, serialize($info));
 
         $uid=session()->get('uid');
         $data=[
