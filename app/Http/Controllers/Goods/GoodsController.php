@@ -12,6 +12,13 @@ class GoodsController extends Controller
 {
     //商品列表展示
     public function goodsList(){
+
+        $redis = new redis();
+        $result = $redis->connect('127.0.0.1', 6379);
+        var_dump($result);exit;
+
+
+
         if(!empty($_GET['key'])){
             $key=$_GET['key'];
         }else{
