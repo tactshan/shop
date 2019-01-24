@@ -21,17 +21,18 @@ class GoodsController extends Controller
             $key='';
         }
 
-//        $cacheKey='info';
-//
-//        if(Redis::exists($cacheKey)){
-//            $res = Redis::get($cacheKey);
-//            $info = unserialize($res);
-//        }else{
+        $redis_Key='h_goods_info'.rand(0,99);
+        echo $redis_Key;echo '</br>';
+        //从缓存中取
+        $info=Redis::hGetAll($redis_Key);
+        if(!empty($info)){
+            echo 'Redis';
+        }else{
+            echo 'Mysql';
             $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2);
-//        }
+            $res=Redis::hmset($redis_Key,$info);
+        }
 
-//        //存redis
-//        Redis::setex($cacheKey, 10, serialize($info));
 
         $uid=session()->get('uid');
         $data=[
