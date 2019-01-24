@@ -29,7 +29,7 @@ class GoodsController extends Controller
             echo 'Redis';
         }else{
             echo 'Mysql';
-            $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2);
+            $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2)->toArray();
             $res=Redis::hmset($redis_Key,$info);
         }
 
