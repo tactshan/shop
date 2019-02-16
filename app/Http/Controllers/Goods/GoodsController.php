@@ -29,10 +29,9 @@ class GoodsController extends Controller
 //            echo 'Redis';
 //        }else{
 //            echo 'Mysql';
-            $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2)->toArray();
+            $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2);
 //            $res=Redis::hmset($redis_Key,$info);
 //        }
-
 
         $uid=session()->get('uid');
         $data=[
@@ -40,6 +39,7 @@ class GoodsController extends Controller
             'uid'=>$uid,
             'key'=>$key
         ];
+
         return view('goods.goodslist',$data);
     }
     //商品列表展示搜索分页
