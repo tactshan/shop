@@ -34,6 +34,7 @@ class GoodsController extends Controller
         }
 
 
+        
         $uid=session()->get('uid');
         $data=[
             'info'=>$info,
