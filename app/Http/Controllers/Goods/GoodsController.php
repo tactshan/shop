@@ -21,20 +21,19 @@ class GoodsController extends Controller
             $key='';
         }
 
-        $redis_Key='h_goods_info'.rand(0,99);
-        echo $redis_Key;echo '</br>';
-        //从缓存中取
-        $info=Redis::hGetAll($redis_Key);
-        if(!empty($info)){
-            echo 'Redis';
-        }else{
-            echo 'Mysql';
+//        $redis_Key='h_goods_info'.rand(0,99);
+//        echo $redis_Key;echo '</br>';
+//        //从缓存中取
+//        $info=Redis::hGetAll($redis_Key);
+//        if(!empty($info)){
+//            echo 'Redis';
+//        }else{
+//            echo 'Mysql';
             $info=DB::table('shop_goods')->where('goods_name','like',"%$key%")->paginate(2)->toArray();
-            $res=Redis::hmset($redis_Key,$info);
-        }
+//            $res=Redis::hmset($redis_Key,$info);
+//        }
 
 
-        
         $uid=session()->get('uid');
         $data=[
             'info'=>$info,
