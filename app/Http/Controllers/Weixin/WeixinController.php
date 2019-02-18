@@ -59,14 +59,13 @@ class WeixinController extends Controller
                 echo '用户已存在';
             }else{
                 $user_data = [
-                    'openid'            => $openid,
+                    'openid'            => $userInfo['openid'],
                     'add_time'          => time(),
                     'nickname'          => $userInfo['nickname'],
                     'sex'               => $userInfo['sex'],
                     'headimgurl'        => $userInfo['headimgurl'],
                     'subscribe_time'    => $sub_time
                 ];
-//                var_dump($user_data);exit;
                 $id = WeixinUser::insertGetId($user_data);      //保存用户信息
                 var_dump($id);
             }
