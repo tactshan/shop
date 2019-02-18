@@ -84,7 +84,7 @@ class GoodsController extends Controller
     //修改执行
     protected function update($id){
         $data=$_POST;
-        $data['goods_price']=$data['goods_price']*100;
+        $data['goods_price']=$data['goods_price'];
         unset($data['_token']);
         unset($data['_method']);
         unset($data['_previous_']);
