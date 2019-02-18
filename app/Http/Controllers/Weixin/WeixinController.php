@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Weixin;
 
+use App\Model\WeixinUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -37,8 +38,40 @@ class WeixinController extends Controller
      */
     public function wxEvent()
     {
-        $data = file_get_contents("php://input");//获取流的形式获取值
-//        var_dump($data);exit;
+        $data = file_get_contents("php://input");//获取流的形式获取值(数据类型是一个xml字符串)
+        //处理xml字符串
+        $xml_str=simplexml_load_string($data);  //得到一个处理后的对象类型
+        //获取事件类型
+        $event= $xml_str->Event;    //subscribe关注   unsubscribe取消关注
+        //判断事件类型
+        if($event=='subscribe'){
+            //获取openid
+            $openid=$xml_str->FromUserName;
+            //获取扫描时间
+            $sub_time=$xml_str->CreateTime;
+
+            //根据openid获取用户信息
+            $userInfo=$this->getUserInfo($openid);
+//            var_dump($userInfo);die;
+            //保存用户信息
+            $userData=WeixinUser::where(['openid'=>$openid])->first();
+            if($userData){
+                echo '用户已存在';
+            }else{
+                $user_data = [
+                    'openid'            => $openid,
+                    'add_time'          => time(),
+                    'nickname'          => $userInfo['nickname'],
+                    'sex'               => $userInfo['sex'],
+                    'headimgurl'        => $userInfo['headimgurl'],
+                    'subscribe_time'    => $sub_time
+                ];
+//                var_dump($user_data);exit;
+                $id = WeixinUser::insertGetId($user_data);      //保存用户信息
+                var_dump($id);
+            }
+        }
+        exit;
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
     }
@@ -50,7 +83,7 @@ class WeixinController extends Controller
     public function validToken()
     {
         $data = file_get_contents("php://input");
-//        var_dump($data);exit;
+        var_dump($data);exit;
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
     }
@@ -82,11 +115,11 @@ class WeixinController extends Controller
      */
     public function getUserInfo($openid)
     {
-        $openid = 'oLreB1jAnJFzV_8AGWUZlfuaoQto';
         $access_token = $this->getWXAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
 
         $data = json_decode(file_get_contents($url),true);
-        echo '<pre>';print_r($data);echo '</pre>';
+        return $data;
+//        echo '<pre>';print_r($data);echo '</pre>';die;
     }
 }
