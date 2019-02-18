@@ -55,10 +55,10 @@ class WeixinController extends Controller
             //保存用户信息
             $userData=WeixinUser::where(['openid'=>$openid])->first();
             if($userData){
-                $data=[
+                $upData=[
                     'status'=>1
                 ];
-                $res=WeixinUser::where(['openid'=>$openid])->update($data);
+                $res=WeixinUser::where(['openid'=>$openid])->update($upData);
                 $str='老用户重新关注'.$res;
                 var_dump($str);
             }else{
@@ -80,10 +80,10 @@ class WeixinController extends Controller
             $where=[
               'openid'=>$openid
             ];
-            $data=[
+            $upData=[
               'status'=>2
             ];
-            $res=WeixinUser::where($where)->update($data);
+            $res=WeixinUser::where($where)->update($upData);
             $str='用户取消关注'.$res;
             var_dump($str);
         }
