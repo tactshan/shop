@@ -31,13 +31,13 @@ class WeixinController extends Controller
         echo $_GET['echostr'];
     }
 
-    
+
     /**
      * 接收微信服务器事件推送
      */
     public function wxEvent()
     {
-        $data = file_get_contents("php://input");
+        $data = file_get_contents("php://input");//获取流的形式获取值
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
     }
