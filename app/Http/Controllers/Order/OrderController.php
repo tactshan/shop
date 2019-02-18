@@ -168,7 +168,7 @@ class OrderController extends Controller
             //减积分
             //赠送积分
             $userWhere=[
-                'uid'=>$uid
+                'id'=>$uid
             ];
             $userData=UserModel::where($userWhere)->first()->toArray();
             $userData['integral']=$userData['integral']-$order_amount;
