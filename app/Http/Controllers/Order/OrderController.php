@@ -34,7 +34,7 @@ class OrderController extends Controller
             $goodsDate=GoodsModel::where(['goods_id'=>$v['goods_id']])->first()->toArray();
             //减少库存
             $goodsDate['goods_stock']=$goodsDate['goods_stock']-$v['buy_number'];
-            $goodsDate['goods_price']=$goodsDate['goods_price']*100;
+            $goodsDate['goods_price']=$goodsDate['goods_price'];
             $upWhere=[
               'goods_id'=>$v['goods_id']
             ];
