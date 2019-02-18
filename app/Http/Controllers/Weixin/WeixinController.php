@@ -49,14 +49,18 @@ class WeixinController extends Controller
             $openid=$xml_str->FromUserName;
             //获取扫描时间
             $sub_time=$xml_str->CreateTime;
-
             //根据openid获取用户信息
             $userInfo=$this->getUserInfo($openid);
 //            var_dump($userInfo);die;
             //保存用户信息
             $userData=WeixinUser::where(['openid'=>$openid])->first();
             if($userData){
-                echo '用户已存在';
+                $data=[
+                    'status'=>1
+                ];
+                $res=WeixinUser::where(['openid'=>$openid])->update($data);
+                $str='老用户重新关注'.$res;
+                var_dump($str);
             }else{
                 $user_data = [
                     'openid'            => $userInfo['openid'],
@@ -67,8 +71,21 @@ class WeixinController extends Controller
                     'subscribe_time'    => $sub_time
                 ];
                 $id = WeixinUser::insertGetId($user_data);      //保存用户信息
-                var_dump($id);
+                $str='新用户关注'.$id;
+                var_dump($str);
             }
+        }else{
+            //用户取消关注    进行修改
+            $openid=$xml_str->FromUserName;
+            $where=[
+              'openid'=>$openid
+            ];
+            $data=[
+              'status'=>2
+            ];
+            $res=WeixinUser::where($where)->update($data);
+            $str='用户取消关注'.$res;
+            var_dump($str);
         }
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
