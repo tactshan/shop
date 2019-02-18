@@ -113,6 +113,7 @@ class WeixinController extends Controller
      */
     public function getUserInfo($openid)
     {
+        echo $openid;exit;
         $access_token = $this->getWXAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN';
 
