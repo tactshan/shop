@@ -31,6 +31,7 @@ class WeixinController extends Controller
         echo $_GET['echostr'];
     }
 
+    
     /**
      * 接收微信服务器事件推送
      */
