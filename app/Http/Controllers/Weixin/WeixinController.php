@@ -38,6 +38,7 @@ class WeixinController extends Controller
     public function wxEvent()
     {
         $data = file_get_contents("php://input");//获取流的形式获取值
+//        var_dump($data);exit;
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
     }
@@ -48,11 +49,8 @@ class WeixinController extends Controller
      */
     public function validToken()
     {
-        //$get = json_encode($_GET);
-        //$str = '>>>>>' . date('Y-m-d H:i:s') .' '. $get . "<<<<<\n";
-        //file_put_contents('logs/weixin.log',$str,FILE_APPEND);
-        //echo $_GET['echostr'];
         $data = file_get_contents("php://input");
+//        var_dump($data);exit;
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
     }
