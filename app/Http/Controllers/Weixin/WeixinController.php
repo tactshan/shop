@@ -48,16 +48,16 @@ class WeixinController extends Controller
                 $media_id=$xml_str->MediaId;
                 $res=$this->saveImage($media_id);
                 if($res){
-                    $data='我们已经收到你的图片啦！';
+                    $hint='我们已经收到你的图片啦！';   //hint  提示
                 }else{
-                    $data='很遗憾，您的图片我们没收到.....请稍后重试！';
+                    $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
                 }
                 $xmlStrResopnse='<xml>
                 <ToUserName><![CDATA['.$openid.']]></ToUserName>
                 <FromUserName><![CDATA['.$toUserName.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA['.$data.']]></Content>
+                <Content><![CDATA['.$hint.']]></Content>
                 </xml>';
                 echo $xmlStrResopnse;
             }
