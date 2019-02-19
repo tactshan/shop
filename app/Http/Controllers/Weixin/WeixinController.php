@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 use GuzzleHttp;
 
 class WeixinController extends Controller
@@ -22,14 +23,15 @@ class WeixinController extends Controller
         //处理xml字符串
         $xml_str=simplexml_load_string($data);  //得到一个处理后的对象类型
         //获取事件类型
-        $event= $xml_str->Event;    //subscribe关注   unsubscribe取消关注
+        $event= $xml_str->Event;    //subscribe关注   unsubscribe取消关注 click公众号点击事件
 
-        //微信接受用户消息，自动回复
+        //处理微信接受用户消息，自动回复
         if(isset($xml_str->MsgType)){
             //获取openid
             $openid=$xml_str->FromUserName;
             //获取用户微信信息
             $toUserName=$xml_str->ToUserName;
+            //用户发送文字
             if($xml_str->MsgType=='text'){
                 $msg=$xml_str->Content;
                 $xmlStrResopnse='<xml>
@@ -38,6 +40,24 @@ class WeixinController extends Controller
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
                 <Content><![CDATA['.$msg.']]></Content>
+                </xml>';
+                echo $xmlStrResopnse;
+            }
+            //用户发送图片
+            if($xml_str->MsgType=='image'){
+                $media_id=$xml_str->MediaId;
+                $res=$this->saveImage($media_id);
+                if($res){
+                    $data='我们已经收到你的图片啦！';
+                }else{
+                    $data='很遗憾，您的图片我们没收到.....请稍后重试！';
+                }
+                $xmlStrResopnse='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$toUserName.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$data.']]></Content>
                 </xml>';
                 echo $xmlStrResopnse;
             }
@@ -226,6 +246,37 @@ class WeixinController extends Controller
             echo '菜单创建成功';
         }else{
             echo '菜单创建失败！错误码'.$res_arr['errmsg'];
+        }
+    }
+
+    /**
+     * 保存用户发送的图片
+     * @param $mediaId
+     * @return bool
+     */
+    public function saveImage($mediaId){
+        $client=new GuzzleHttp\Client();
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+        //拼接下载图片的url  https://api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$mediaId;
+
+        //使用GuzzleHttp下载文件
+        $response=$client->get($url);
+
+        //获取文件名称
+        $file_info = $response->getHeader('Content-disposition');
+        // string(91) "attachment; filename="naj5JLd6yeW1dLiIxlaNCv5AceOAyuCYt1EVcBWr8ky5FO48dIAarm_pDvbNDy25.jpg""
+        $file_name=substr(rtrim($file_info[0],'"'),-20);
+        //dIAarm_pDvbNDy25.jpg
+        $WxImageSavePath='wx/images/'.$file_name;
+        //保存路径/home/wwwroot/shop/storage/app/wx/images
+        //保存图片
+        $res = Storage::disk('local')->put($WxImageSavePath,$response->getBody());
+        if($res){     //保存成功
+            return true;
+        }else{      //保存失败
+            return false;
         }
     }
 }
