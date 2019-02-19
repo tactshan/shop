@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Redis;
+use GuzzleHttp;
 
 class WeixinController extends Controller
 {
@@ -137,5 +138,36 @@ class WeixinController extends Controller
         $data = json_decode(file_get_contents($url),true);
         return $data;
 //        echo '<pre>';print_r($data);echo '</pre>';die;
+    }
+
+
+    /**
+     * 自定义菜单创建
+     */
+    public function createMenu(){
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+        //拼接url
+        $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token;
+        //请求微信接口
+        $client = new GuzzleHttp\Client(['base_uri' => $url]);
+
+        //拼接菜单数据
+        $data=[
+          "button" => [
+              [
+                  "type"=>"view",
+                  "name"=>"Tactshan",
+                  "url"=>"https://www.baidu.com"
+              ]
+          ]
+        ];
+        $res=$client->request('POST', $url, ['body' => json_encode($data)]);
+        $res_arr=json_decode($res->getBody(),true);
+        if($res_arr['errcode']==0){
+            echo '菜单创建成功';
+        }else{
+            echo '菜单创建失败！错误码'.$res_arr['errmsg'];
+        }
     }
 }
