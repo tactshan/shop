@@ -44,7 +44,7 @@ class WeixinController extends Controller
         $xml_str=simplexml_load_string($data);  //得到一个处理后的对象类型
         //获取事件类型
         $event= $xml_str->Event;    //subscribe关注   unsubscribe取消关注
-        //判断事件类型
+        //判断事件类型----关注和取消关注
         if($event=='subscribe'){
             //获取openid
             $openid=$xml_str->FromUserName;
@@ -75,7 +75,7 @@ class WeixinController extends Controller
                 $str='新用户关注'.$id;
                 var_dump($str);
             }
-        }else{
+        }else if($event=='unsubscribe'){
             //用户取消关注    进行修改
             $openid=$xml_str->FromUserName;
             $where=[
@@ -87,42 +87,51 @@ class WeixinController extends Controller
             $res=WeixinUser::where($where)->update($upData);
             $str='用户取消关注'.$res;
             var_dump($str);
+        }else if($event=='CLICK'){
+            //判断事件类型----公众号事件(点击自动回复)
+            if($xml_str->EventKey=='get_content'){
+                $openid=$xml_str->FromUserName;
+                $toUserName=$xml_str->ToUserName;
+                $time=time();
+                $date=date("Y/m/d H:i:s");
+                $content='你好，我是Tactshan！温馨提示您当前时间为'.$date;
+                $str="<xml> <ToUserName>< ![CDATA[".$openid."] ]></ToUserName> <FromUserName>< ![CDATA[".$toUserName."] ]></FromUserName> <CreateTime>".$time."</CreateTime> <MsgType>< ![CDATA[text] ]></MsgType> <Content>< ![CDATA[".$content."] ]></Content> </xml>";
+                echo $str;
+            }
         }
+
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
     }
     
 
-    /**
-     * 接收事件推送
-     */
-    public function validToken()
-    {
-        $data = file_get_contents("php://input");
-        var_dump($data);exit;
-        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
-        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
-    }
+//    /**
+//     * 接收事件推送
+//     */
+//    public function validToken()
+//    {
+//        $data = file_get_contents("php://input");
+//        var_dump($data);exit;
+//        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
+//        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
+//    }
 
     /**
      * 获取微信AccessToken
      */
     public function getWXAccessToken()
     {
-
         //获取缓存
         $token = Redis::get($this->redis_weixin_access_token);
         if(!$token){        // 无缓存 请求微信接口
             $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WEIXIN_APPID').'&secret='.env('WEIXIN_APPSECRET');
             $data = json_decode(file_get_contents($url),true);
-
             //记录缓存
             $token = $data['access_token'];
             Redis::set($this->redis_weixin_access_token,$token);
             Redis::setTimeout($this->redis_weixin_access_token,3600);
         }
         return $token;
-
     }
 
     /**
@@ -140,7 +149,6 @@ class WeixinController extends Controller
 //        echo '<pre>';print_r($data);echo '</pre>';die;
     }
 
-
     /**
      * 自定义菜单创建
      */
@@ -156,9 +164,48 @@ class WeixinController extends Controller
         $data=[
           "button" => [
               [
-                  "type"=>"view",
-                  "name"=>"测试.....",
-                  "url"=>"https://www.baidu.com"
+                  "type"=>"click",
+                  "name"=>"获取自动回复",
+                  "key"=>"get_content"
+              ],
+              [
+                 'name'=>"扫码",
+                  'sub_button'=>[
+                      [
+                          "type"=>"scancode_waitmsg",
+                          "name"=>"扫码",
+                          "key"=>"rselfmenu_0_0",
+                          "sub_button"=> [ ]
+                      ],
+                      [
+                          'type'=>'pic_sysphoto',
+                          'name'=>'拍照发图',
+                          'key'=>"rselfmenu_1_0",
+                          "sub_button"=> [ ]
+                      ],
+                      [
+                          'type'=>'pic_photo_or_album',
+                          'name'=>'拍照或者相册发图',
+                          'key'=>"rselfmenu_1_1",
+                          "sub_button"=> [ ]
+                      ],
+                      [
+                          'type'=>'pic_weixin',
+                          'name'=>'微信相册发图',
+                          'key'=>"rselfmenu_1_2",
+                          "sub_button"=> [ ]
+                      ]
+                  ]
+              ],
+              [
+                 "name"=>"个人中心",
+                  "sub_button"=>[
+                      [
+                          "type"=>"location_select",
+                          "name"=>"发送位置",
+                          "key"=> "rselfmenu_2_0"
+                      ]
+                  ]
               ]
           ]
         ];
