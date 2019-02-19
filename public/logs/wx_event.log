@@ -52,4 +52,28 @@
 <Event><![CDATA[CLICK]]></Event>
 <EventKey><![CDATA[get_content]]></EventKey>
 </xml>
+<<<<<<<2019-02-19 14:52:46
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550559138</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[get_content]]></EventKey>
+</xml>
+<<<<<<<2019-02-19 14:56:01
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550559138</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[get_content]]></EventKey>
+</xml>
+<<<<<<<2019-02-19 14:56:49
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550559138</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[get_content]]></EventKey>
+</xml>
 <<<<<<<
