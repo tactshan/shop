@@ -157,12 +157,12 @@ class WeixinController extends Controller
           "button" => [
               [
                   "type"=>"view",
-                  "name"=>"Tactshan",
+                  "name"=>"测试.....",
                   "url"=>"https://www.baidu.com"
               ]
           ]
         ];
-        $res=$client->request('POST', $url, ['body' => json_encode($data)]);
+        $res=$client->request('POST', $url, ['body' => json_encode($data,JSON_UNESCAPED_UNICODE)]);
         $res_arr=json_decode($res->getBody(),true);
         if($res_arr['errcode']==0){
             echo '菜单创建成功';
