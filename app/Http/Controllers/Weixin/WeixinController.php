@@ -92,23 +92,29 @@ class WeixinController extends Controller
             if($xml_str->EventKey=='get_content'){
                 $openid=$xml_str->FromUserName;
                 $toUserName=$xml_str->ToUserName;
-                $time=time();
-                $date=date("Y/m/d H:i:s");
-                $content='你好，我是Tactshan！温馨提示您当前时间为'.$date;
-                $xmlStrResopnse="<xml>
+                $this->getContent($openid,$toUserName);
+            }
+        }
+        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
+        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
+    }
+
+    /**
+     * 自动回复
+     */
+    public function getContent($openid,$toUserName){
+        $time=time();
+        $date=date("Y/m/d H:i:s");
+        $content='你好，我是Tactshan！温馨提示您当前时间为'.$date;
+        $xmlStrResopnse="<xml>
                     <ToUserName>< ![CDATA[".$openid."] ]></ToUserName>
                     <FromUserName>< ![CDATA[".$toUserName."] ]></FromUserName>
                     <CreateTime>".$time."</CreateTime>
                     <MsgType>< ![CDATA[text] ]></MsgType>
                     <Content>< ![CDATA[".$content."] ]></Content>
                     </xml>";
-                echo $xmlStrResopnse;
-            }
-        }
-        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
-        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
+        echo $xmlStrResopnse;
     }
-    
 
     /**
      * 接收事件推送
