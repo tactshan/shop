@@ -97,7 +97,7 @@ class WeixinController extends Controller
                 $content='你好，我是Tactshan！温馨提示您当前时间为'.$date;
                 $xmlStrResopnse="<xml>
                     <ToUserName>< ![CDATA[".$openid."] ]></ToUserName>
-                    <FromUserName>< ![CDATA['.$toUserName.'] ]></FromUserName>
+                    <FromUserName>< ![CDATA[".$toUserName."] ]></FromUserName>
                     <CreateTime>".$time."</CreateTime>
                     <MsgType>< ![CDATA[text] ]></MsgType>
                     <Content>< ![CDATA[".$content."] ]></Content>
