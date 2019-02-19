@@ -44,6 +44,26 @@ class WeixinController extends Controller
         $xml_str=simplexml_load_string($data);  //得到一个处理后的对象类型
         //获取事件类型
         $event= $xml_str->Event;    //subscribe关注   unsubscribe取消关注
+
+        //微信接受用户消息，自动回复
+        if(isset($xml_str->MsgType)){
+            //获取openid
+            $openid=$xml_str->FromUserName;
+            //获取用户微信信息
+            $toUserName=$xml_str->ToUserName;
+            if($xml_str->MsgType=='text'){
+                $msg=$xml_str->Content;
+                $xmlStrResopnse='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$toUserName.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$msg.']]></Content>
+                </xml>';
+                echo $xmlStrResopnse;
+            }
+        }
+
         //判断事件类型----关注和取消关注
         if($event=='subscribe'){
             //获取openid
@@ -95,6 +115,7 @@ class WeixinController extends Controller
                 $this->getContent($openid,$toUserName);
             }
         }
+
         $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
         file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
     }
