@@ -44,4 +44,12 @@
 <Event><![CDATA[CLICK]]></Event>
 <EventKey><![CDATA[get_content]]></EventKey>
 </xml>
+<<<<<<<2019-02-19 14:45:43
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550556524</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[CLICK]]></Event>
+<EventKey><![CDATA[get_content]]></EventKey>
+</xml>
 <<<<<<<
