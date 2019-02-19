@@ -104,16 +104,16 @@ class WeixinController extends Controller
     }
     
 
-//    /**
-//     * 接收事件推送
-//     */
-//    public function validToken()
-//    {
-//        $data = file_get_contents("php://input");
-//        var_dump($data);exit;
-//        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
-//        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
-//    }
+    /**
+     * 接收事件推送
+     */
+    public function validToken()
+    {
+        $data = file_get_contents("php://input");
+        var_dump($data);exit;
+        $log_str = date('Y-m-d H:i:s') . "\n" . $data . "\n<<<<<<<";
+        file_put_contents('logs/wx_event.log',$log_str,FILE_APPEND);
+    }
 
     /**
      * 获取微信AccessToken
