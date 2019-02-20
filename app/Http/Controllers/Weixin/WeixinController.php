@@ -57,7 +57,7 @@ class WeixinController extends Controller
                 if($res&&$res2){
                     $hint='我们已经收到你的图片啦！';   //hint  提示
                 }else{
-                    $hint='很遗憾，您的图片我们没收到.....请稍后重试！';exit;
+                    $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
                 }
                 $xmlStrResopnse='<xml>
                 <ToUserName><![CDATA['.$openid.']]></ToUserName>
@@ -75,23 +75,21 @@ class WeixinController extends Controller
                 $media_id=$xml_str->MediaId;
                 //保存语音到本地|服务器
                 $res=$this->saveVoice($media_id);
-                if(!empty($res)){
-                    $res2=$this->saveMaterial($xml_str,$res);
-                    //保存素材到数据库
-                    if($res2){
-                        $hint=$res['file_path'];   //hint  提示
-                    }else{
-                        $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
-                    }
-                    $xmlStrResopnse='<xml>
+                //保存素材到数据库
+                $res2=$this->saveMaterial($xml_str,$res);
+                if($res&&$res2){
+                    $hint=$res['file_path'];   //hint  提示
+                }else{
+                    $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
+                }
+                $xmlStrResopnse='<xml>
                 <ToUserName><![CDATA['.$openid.']]></ToUserName>
                 <FromUserName><![CDATA['.$toUserName.']]></FromUserName>
                 <CreateTime>'.time().'</CreateTime>
                 <MsgType><![CDATA[text]]></MsgType>
                 <Content><![CDATA['.$hint.']]></Content>
                 </xml>';
-                    echo $xmlStrResopnse;
-                }
+                echo $xmlStrResopnse;
             }
         }
 
@@ -341,7 +339,7 @@ class WeixinController extends Controller
         if($res){     //保存成功
             return $saveInfo;
         }else{      //保存失败
-            return '';
+            return false;
         }
     }
 
@@ -401,8 +399,8 @@ class WeixinController extends Controller
             'file_name'=>$saveInfo['file_name'],
             'file_path'=>$saveInfo['file_path']
         ];
-        $res=WeixinMaterial::insertGetId($materialData);
-        if($res){
+        $res3=WeixinMaterial::insertGetId($materialData);
+        if($res3){
             return true;
         }else{
             return false;
