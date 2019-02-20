@@ -102,3 +102,5 @@ Route::get('/weixin/valid1','Weixin\WeixinController@validToken1');
 Route::post('/weixin/valid1','Weixin\WeixinController@wxEvent');        //接收微信服务器事件推送
 Route::post('/weixin/valid','Weixin\WeixinController@validToken');
 Route::get('/weixin/create_menu','Weixin\WeixinController@createMenu');      //自定义菜单创建
+Route::get('/weixin/get_access_token','Weixin\WeixinController@getWXAccessToken');      //获取微信的access_token
+Route::get('/weixin/group_sending','Weixin\WeixinController@GroupSending');      //群发送消息

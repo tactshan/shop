@@ -32,7 +32,6 @@ class WeixinController extends Controller
             //获取用户微信信息
             $toUserName=$xml_str->ToUserName;
 
-
             //用户发送文字
             if($xml_str->MsgType=='text'){
                 $msg=$xml_str->Content;
@@ -98,7 +97,7 @@ class WeixinController extends Controller
 //            var_dump($userInfo);die;
             //保存用户信息
             $userData=WeixinUser::where(['openid'=>$openid])->first();
-            if($userData){
+            if(!empty($userData)){
                 $upData=[
                     'status'=>1
                 ];
@@ -203,6 +202,18 @@ class WeixinController extends Controller
         return $data;
 //        echo '<pre>';print_r($data);echo '</pre>';die;
     }
+
+
+    /**
+     * 群发送消息
+     */
+    public function GroupSending(){
+        echo '群发消息';
+    }
+
+
+
+
 
     /**
      * 自定义菜单创建
