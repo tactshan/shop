@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Weixin;
 
+use App\Model\WeixinMaterial;
 use App\Model\WeixinUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,8 +50,11 @@ class WeixinController extends Controller
             if($xml_str->MsgType=='image'){
                 //获取media_id
                 $media_id=$xml_str->MediaId;
+                //保存图片到本地|服务器
                 $res=$this->saveImage($media_id);
-                if($res){
+                //保存素材到数据库
+                $res2=$this->saveMaterial($xml_str,$res);
+                if($res&&$res2){
                     $hint='我们已经收到你的图片啦！';   //hint  提示
                 }else{
                     $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
@@ -69,9 +73,12 @@ class WeixinController extends Controller
             if($xml_str->MsgType=='voice'){
                 //获取media_id
                 $media_id=$xml_str->MediaId;
+                //保存语音到本地|服务器
                 $res=$this->saveVoice($media_id);
-                if($res){
-                    $hint=$res;   //hint  提示
+                //保存素材到数据库
+                $res2=$this->saveMaterial($xml_str,$res);
+                if($res&&$res2){
+                    $hint=$res['file_path'];   //hint  提示
                 }else{
                     $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
                 }
@@ -325,8 +332,12 @@ class WeixinController extends Controller
         //保存路径/home/wwwroot/shop/storage/app/wx/images
         //保存图片
         $res = Storage::disk('local')->put($WxImageSavePath,$response->getBody());
+        $saveInfo=[
+          'file_name'=>$file_name,
+          'file_path'=>$url
+        ];
         if($res){     //保存成功
-            return true;
+            return $saveInfo;
         }else{      //保存失败
             return false;
         }
@@ -351,8 +362,12 @@ class WeixinController extends Controller
         $file_name=substr(rtrim($file_info[0],'"'),-20);
         $WxVoiceSavePath='wx/voice/'.$file_name;
         $res = Storage::disk('local')->put($WxVoiceSavePath,$response->getBody());
+        $saveInfo=[
+            'file_name'=>$file_name,
+            'file_path'=>$url
+        ];
         if($res){     //保存成功
-            return $url;
+            return $saveInfo;
         }else{      //保存失败
             return false;
         }
@@ -365,6 +380,31 @@ class WeixinController extends Controller
     {
         Redis::del($this->redis_weixin_access_token);
         echo $this->getWXAccessToken();
+    }
+
+    /**
+     * 保存素材到数据库
+     * @param $xml_str
+     * @param $saveInfo
+     * @return bool
+     */
+    public function saveMaterial($xml_str,$saveInfo){
+        $materialData=[
+            'openid'=>$xml_str->FromUserName,
+            'add_time'=>$xml_str->CreateTime,
+            'msg_type'=>$xml_str->MsgType,
+            'media_id'=>$xml_str->MediaId,
+            'format'=> $xml_str->Format,
+            'msg_id'=>$xml_str->MsgId,
+            'file_name'=>$saveInfo['file_name'],
+            'file_path'=>$saveInfo['file_path']
+        ];
+        $res=WeixinMaterial::insertGetId($materialData);
+        if($res){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

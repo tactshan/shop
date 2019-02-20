@@ -160,4 +160,50 @@
 <Event><![CDATA[subscribe]]></Event>
 <EventKey><![CDATA[]]></EventKey>
 </xml>
+<<<<<<<2019-02-20 19:59:37
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550662544</CreateTime>
+<MsgType><![CDATA[image]]></MsgType>
+<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz_jpg/MZ0I9ZxrYy1mFmJbsFUscmhjkrzKjgOOk5C0bMLv818UMt44Z2T4TJN0goRcBIyzptSTBwG0DhibT9blNuWPeicA/0]]></PicUrl>
+<MsgId>22200153096096618</MsgId>
+<MediaId><![CDATA[iGsJd0tnIUJKLA9v2t5tDzmRZO7WfGwKKmr5czthwsg9fAK9nOhSdlg93Do-MJHD]]></MediaId>
+</xml>
+<<<<<<<2019-02-20 20:07:53
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550664020</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[subscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
+<<<<<<<2019-02-20 20:10:48
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550660441</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[_kaJDjbaL6NiYtfuv02R-SPe76fMI_saY19F2JZvkLmivYCdFxrCBzcnRIbNx_kL]]></MediaId>
+<Format><![CDATA[amr]]></Format>
+<MsgId>22200120449481386</MsgId>
+<Recognition><![CDATA[]]></Recognition>
+</xml>
+<<<<<<<2019-02-20 20:12:00
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550660471</CreateTime>
+<MsgType><![CDATA[image]]></MsgType>
+<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz_jpg/MZ0I9ZxrYy1mFmJbsFUscmhjkrzKjgOOH5sHD6wjsHxQwzvSmG75rMOsIvzWfWGqESwv9oAQmhpdNicJQRlqhDw/0]]></PicUrl>
+<MsgId>22200119329846219</MsgId>
+<MediaId><![CDATA[QqC8dSnmzOHm0HvA-uj5c4Lq-q2Ow2c0lM6_yDeaIbbS10G-tKIvhsr_oKgaNRtY]]></MediaId>
+</xml>
+<<<<<<<2019-02-20 20:13:11
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550660441</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[_kaJDjbaL6NiYtfuv02R-SPe76fMI_saY19F2JZvkLmivYCdFxrCBzcnRIbNx_kL]]></MediaId>
+<Format><![CDATA[amr]]></Format>
+<MsgId>22200120449481386</MsgId>
+<Recognition><![CDATA[]]></Recognition>
+</xml>
 <<<<<<<
