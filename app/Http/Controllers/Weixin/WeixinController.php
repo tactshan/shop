@@ -224,6 +224,7 @@ class WeixinController extends Controller
             "msgtype"=>"text",
             "text"=>["content"=>"群发测试"],
         ];
+        
         $res=$client->request('POST', $url, ['body' => json_encode($data,JSON_UNESCAPED_UNICODE)]);
         $res_arr=json_decode($res->getBody(),true);
         if($res_arr['errcode']==0){
@@ -233,7 +234,7 @@ class WeixinController extends Controller
         }
     }
 
-    
+
     /**
      * 自定义菜单创建
      */
