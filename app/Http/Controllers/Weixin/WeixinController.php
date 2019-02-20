@@ -202,8 +202,7 @@ class WeixinController extends Controller
         return $data;
 //        echo '<pre>';print_r($data);echo '</pre>';die;
     }
-
-
+    
     /**
      * 群发送消息
      */
@@ -233,7 +232,6 @@ class WeixinController extends Controller
             echo '群发失败！错误码'.$res_arr['errmsg'];
         }
     }
-
 
     /**
      * 自定义菜单创建
