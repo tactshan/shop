@@ -104,3 +104,5 @@ Route::post('/weixin/valid','Weixin\WeixinController@validToken');
 Route::get('/weixin/create_menu','Weixin\WeixinController@createMenu');      //自定义菜单创建
 Route::get('/weixin/get_access_token','Weixin\WeixinController@getWXAccessToken');      //获取微信的access_token
 Route::get('/weixin/group_sending','Weixin\WeixinController@GroupSending');      //群发送消息
+
+Route::get('/weixin/refresh_token','Weixin\WeixinController@refreshToken');     //刷新token

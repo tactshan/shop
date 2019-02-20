@@ -183,7 +183,7 @@ class WeixinController extends Controller
             //记录缓存
             $token = $data['access_token'];
             Redis::set($this->redis_weixin_access_token,$token);
-//            Redis::setTimeout($this->redis_weixin_access_token,3600);
+            Redis::setTimeout($this->redis_weixin_access_token,3600);
         }
         return $token;
     }
@@ -208,13 +208,32 @@ class WeixinController extends Controller
      * 群发送消息
      */
     public function GroupSending(){
-        echo '群发消息';
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+        //拼接url
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token='.$access_token;
+        //请求微信接口
+        $client = new GuzzleHttp\Client(['base_uri' => $url]);
+        //拼接数据
+        $userInfo=WeixinUser::all()->toArray();
+        foreach ($userInfo as $k=>$v){
+            $openid[]=$v['openid'];
+        }
+        $data=[
+            'touser'=>$openid,
+            "msgtype"=>"text",
+            "text"=>["content"=>"群发测试"],
+        ];
+        $res=$client->request('POST', $url, ['body' => json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        $res_arr=json_decode($res->getBody(),true);
+        if($res_arr['errcode']==0){
+            echo '群发成功';
+        }else{
+            echo '群发失败！错误码'.$res_arr['errmsg'];
+        }
     }
 
-
-
-
-
+    
     /**
      * 自定义菜单创建
      */
@@ -340,4 +359,14 @@ class WeixinController extends Controller
             return false;
         }
     }
+
+    /**
+     * 刷新access_token
+     */
+    public function refreshToken()
+    {
+        Redis::del($this->redis_weixin_access_token);
+        echo $this->getWXAccessToken();
+    }
+
 }
