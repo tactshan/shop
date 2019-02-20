@@ -183,7 +183,7 @@ class WeixinController extends Controller
             //记录缓存
             $token = $data['access_token'];
             Redis::set($this->redis_weixin_access_token,$token);
-            Redis::setTimeout($this->redis_weixin_access_token,3600);
+//            Redis::setTimeout($this->redis_weixin_access_token,3600);
         }
         return $token;
     }
