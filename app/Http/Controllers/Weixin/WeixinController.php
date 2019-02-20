@@ -31,6 +31,8 @@ class WeixinController extends Controller
             $openid=$xml_str->FromUserName;
             //获取用户微信信息
             $toUserName=$xml_str->ToUserName;
+
+
             //用户发送文字
             if($xml_str->MsgType=='text'){
                 $msg=$xml_str->Content;
@@ -43,12 +45,34 @@ class WeixinController extends Controller
                 </xml>';
                 echo $xmlStrResopnse;
             }
+
             //用户发送图片
             if($xml_str->MsgType=='image'){
+                //获取media_id
                 $media_id=$xml_str->MediaId;
                 $res=$this->saveImage($media_id);
                 if($res){
                     $hint='我们已经收到你的图片啦！';   //hint  提示
+                }else{
+                    $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
+                }
+                $xmlStrResopnse='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$toUserName.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$hint.']]></Content>
+                </xml>';
+                echo $xmlStrResopnse;
+            }
+
+            //用户发送语音
+            if($xml_str->MsgType=='voice'){
+                //获取media_id
+                $media_id=$xml_str->MediaId;
+                $res=$this->saveVoice($media_id);
+                if($res){
+                    $hint=$res;   //hint  提示
                 }else{
                     $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
                 }
@@ -275,6 +299,32 @@ class WeixinController extends Controller
         $res = Storage::disk('local')->put($WxImageSavePath,$response->getBody());
         if($res){     //保存成功
             return true;
+        }else{      //保存失败
+            return false;
+        }
+    }
+
+    /**
+     * 保存用户发送的语音
+     * @param $mediaid
+     */
+    public function saveVoice($mediaid){
+        $client = new GuzzleHttp\Client();
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+
+        //拼接下载语音的url
+        //https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$mediaid;
+        //使用GuzzleHttp下载文件
+        $response=$client->get($url);
+        //获取文件名称
+        $file_info = $response->getHeader('Content-disposition');
+        $file_name=substr(rtrim($file_info[0],'"'),-20);
+        $WxVoiceSavePath='wx/voice/'.$file_name;
+        $res = Storage::disk('local')->put($WxVoiceSavePath,$response->getBody());
+        if($res){     //保存成功
+            return $url;
         }else{      //保存失败
             return false;
         }
