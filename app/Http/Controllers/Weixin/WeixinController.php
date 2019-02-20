@@ -222,9 +222,9 @@ class WeixinController extends Controller
         $data=[
             'touser'=>$openid,
             "msgtype"=>"text",
-            "text"=>["content"=>"群发测试"],
+            "text"=>["content"=>"群发测试001"],
         ];
-        
+
         $res=$client->request('POST', $url, ['body' => json_encode($data,JSON_UNESCAPED_UNICODE)]);
         $res_arr=json_decode($res->getBody(),true);
         if($res_arr['errcode']==0){
