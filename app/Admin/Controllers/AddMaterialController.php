@@ -94,7 +94,9 @@ class AddMaterialController extends Controller
 
         $grid->id('Id');
         $grid->media_id('Media id');
-        $grid->material_url('Material url');
+        $grid->material_url('Material url')->display(function ($material_url){
+            return '<img src="'.$material_url.'">';
+        });
         $grid->add_time('Add time');
 
         return $grid;
@@ -135,13 +137,20 @@ class AddMaterialController extends Controller
         return $form;
     }
 
-    //素材添加视图
+    /**
+     * 素材添加视图
+     * @return Form
+     */
     public function addMaterial(){
         $form = new Form(new WexinLasingMaterial);
         $form->image('media', '素材');
         return $form;
     }
-    //接收素材
+
+    /**
+     * 接收素材
+     * @param Request $request
+     */
     public function getMaterial(Request $request){
         $material=$request->file('media');
         //获取文件名称
@@ -164,7 +173,12 @@ class AddMaterialController extends Controller
         }
     }
 
-    //上传永久素材
+    /**
+     * 上传永久素材
+     * @param $file_path
+     * @return mixed
+     * @throws GuzzleHttp\Exception\GuzzleException
+     */
     public function save_lasing_material($file_path){
         //获取access_token
         $access_token=$this->getWXAccessToken();
@@ -184,7 +198,11 @@ class AddMaterialController extends Controller
         return $data;
     }
 
-    //将上传永久素材后的数据保存到数据库
+    /**
+     * 将上传永久素材后的数据保存到数据库
+     * @param $data
+     * @return bool
+     */
     public function saveMaterialDataDb($data){
 
         $insertData=[
@@ -200,7 +218,10 @@ class AddMaterialController extends Controller
         }
     }
 
-    //获取素材列表
+    /**
+     * 获取素材列表
+     * @throws GuzzleHttp\Exception\GuzzleException
+     */
     public function getMaterialList(){
         //获取access_token
         $access_token=$this->getWXAccessToken();
@@ -221,9 +242,11 @@ class AddMaterialController extends Controller
         var_dump($request_arr);die;
     }
 
-
-
-    //微信群发
+    /**
+     * 微信群发
+     * @param Content $content
+     * @return Content
+     */
     public function groupSending(Content $content)
     {
         return $content
@@ -231,13 +254,22 @@ class AddMaterialController extends Controller
             ->description('description')
             ->body($this->group_sending_grid());
     }
-    //群发视图显示
+
+    /**
+     * 群发视图显示
+     * @return Form
+     */
     public function group_sending_grid(){
         $form = new Form(new WexinLasingMaterial);
         $form->textarea('content', '群发内容');
         return $form;
     }
-    //接收群发内容
+
+    /**
+     * 接收群发内容
+     * @param Request $request
+     * @throws GuzzleHttp\Exception\GuzzleException
+     */
     public function group_content(Request $request){
         $group_content=$request->input('content');
         //获取access_token
