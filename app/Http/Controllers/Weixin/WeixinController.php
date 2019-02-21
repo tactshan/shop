@@ -55,7 +55,7 @@ class WeixinController extends Controller
                 //保存素材到数据库
                 $res2=$this->saveMaterial($xml_str,$res);
                 if($res&&$res2){
-                    $hint='我们已经收到你的图片啦！';   //hint  提示
+                    $hint='我们已经收到你的图片啦！点击'.'<a href="'.$res['file_path'].'">'.'查看'.'</a>';   //hint  提示
                 }else{
                     $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
                 }
