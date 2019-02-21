@@ -155,7 +155,7 @@ class AddMaterialController extends Controller
 
         //将图片上传至永久素材
         $save_lasing_material_data=$this->save_lasing_material($save_file_path);
-
+        var_dump($save_lasing_material_data);exit;
         //将数据保存到数据库
         $res=$this->saveMaterialDataDb($save_lasing_material_data);
         if($res){
@@ -187,6 +187,7 @@ class AddMaterialController extends Controller
 
     //将上传永久素材后的数据保存到数据库
     public function saveMaterialDataDb($data){
+
         $insertData=[
           'media_id'=>$data['media_id'],
             'material_url'=>$data['url'],
@@ -220,6 +221,8 @@ class AddMaterialController extends Controller
         $request_arr=json_decode($r->getBody(),true);
         var_dump($request_arr);die;
     }
+
+
 
     //微信群发
     public function groupSending(Content $content)
