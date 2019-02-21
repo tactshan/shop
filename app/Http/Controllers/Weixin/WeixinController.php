@@ -51,7 +51,7 @@ class WeixinController extends Controller
                 //获取media_id
                 $media_id=$xml_str->MediaId;
                 //保存图片到本地|服务器
-                $res=$this->saveImage($media_id);
+                $res=$this->saveMaterialLocal($media_id,'image');
                 //保存素材到数据库
                 $res2=$this->saveMaterial($xml_str,$res);
                 if($res&&$res2){
@@ -74,7 +74,8 @@ class WeixinController extends Controller
                 //获取media_id
                 $media_id=$xml_str->MediaId;
                 //保存语音到本地|服务器
-                $res=$this->saveVoice($media_id);
+                $res=$this->saveMaterialLocal($media_id,'voice');
+                //类型
                 //保存素材到数据库
                 $res2=$this->saveMaterial($xml_str,$res);
                 if($res&&$res2){
@@ -90,6 +91,11 @@ class WeixinController extends Controller
                 <Content><![CDATA['.$hint.']]></Content>
                 </xml>';
                 echo $xmlStrResopnse;
+            }
+
+            //用户发送视频
+            if($xml_str->MsgType=='video'){
+
             }
         }
 
@@ -308,12 +314,20 @@ class WeixinController extends Controller
         }
     }
 
+
+
+
+
+
+
+
+
     /**
-     * 保存用户发送的图片
+     * 保存用户发送的素材到本地
      * @param $mediaId
      * @return bool
      */
-    public function saveImage($mediaId){
+    public function saveMaterialLocal($mediaId,$type){
         $client=new GuzzleHttp\Client();
         //获取access_token
         $access_token=$this->getWXAccessToken();
@@ -328,43 +342,20 @@ class WeixinController extends Controller
         // string(91) "attachment; filename="naj5JLd6yeW1dLiIxlaNCv5AceOAyuCYt1EVcBWr8ky5FO48dIAarm_pDvbNDy25.jpg""
         $file_name=substr(rtrim($file_info[0],'"'),-20);
         //dIAarm_pDvbNDy25.jpg
-        $WxImageSavePath='wx/images/'.$file_name;
+
+        //判断文件类型，确定保存路径
+        if($type=='image'){
+            $localPath='wx/images/';
+        }else if($type=='voice'){
+            $localPath='wx/voice/';
+        }
+        $WxImageSavePath=$localPath.$file_name;
         //保存路径/home/wwwroot/shop/storage/app/wx/images
         //保存图片
         $res = Storage::disk('local')->put($WxImageSavePath,$response->getBody());
         $saveInfo=[
           'file_name'=>$file_name,
           'file_path'=>$url
-        ];
-        if($res){     //保存成功
-            return $saveInfo;
-        }else{      //保存失败
-            return false;
-        }
-    }
-
-    /**
-     * 保存用户发送的语音
-     * @param $mediaid
-     */
-    public function saveVoice($mediaid){
-        $client = new GuzzleHttp\Client();
-        //获取access_token
-        $access_token=$this->getWXAccessToken();
-
-        //拼接下载语音的url
-        //https://api.weixin.qq.com/cgi-bin/media/get/jssdk?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
-        $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$access_token.'&media_id='.$mediaid;
-        //使用GuzzleHttp下载文件
-        $response=$client->get($url);
-        //获取文件名称
-        $file_info = $response->getHeader('Content-disposition');
-        $file_name=substr(rtrim($file_info[0],'"'),-20);
-        $WxVoiceSavePath='wx/voice/'.$file_name;
-        $res = Storage::disk('local')->put($WxVoiceSavePath,$response->getBody());
-        $saveInfo=[
-            'file_name'=>$file_name,
-            'file_path'=>$url
         ];
         if($res){     //保存成功
             return $saveInfo;
