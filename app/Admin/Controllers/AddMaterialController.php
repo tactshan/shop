@@ -155,7 +155,6 @@ class AddMaterialController extends Controller
 
         //将图片上传至永久素材
         $save_lasing_material_data=$this->save_lasing_material($save_file_path);
-        var_dump($save_lasing_material_data);exit;
         //将数据保存到数据库
         $res=$this->saveMaterialDataDb($save_lasing_material_data);
         if($res){
