@@ -206,4 +206,14 @@
 <MsgId>22200120449481386</MsgId>
 <Recognition><![CDATA[]]></Recognition>
 </xml>
+<<<<<<<2019-02-21 08:33:28
+<xml><ToUserName><![CDATA[gh_a21ca4a792c3]]></ToUserName>
+<FromUserName><![CDATA[oYI0f1BcTBUBDlA5NLaqWl3mt1Ws]]></FromUserName>
+<CreateTime>1550660441</CreateTime>
+<MsgType><![CDATA[voice]]></MsgType>
+<MediaId><![CDATA[_kaJDjbaL6NiYtfuv02R-SPe76fMI_saY19F2JZvkLmivYCdFxrCBzcnRIbNx_kL]]></MediaId>
+<Format><![CDATA[amr]]></Format>
+<MsgId>22200120449481386</MsgId>
+<Recognition><![CDATA[]]></Recognition>
+</xml>
 <<<<<<<
