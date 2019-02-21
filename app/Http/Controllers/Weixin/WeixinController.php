@@ -392,6 +392,8 @@ class WeixinController extends Controller
      * @return bool
      */
     public function saveMaterial($xml_str,$saveInfo){
+        //https://shop.tactshan.com/wx/images/_ia27aqZeswBWrWR.jpg
+        //http://www.vmshop.com/wx/images/dIAarm_pDvbNDy25.jpg
         $materialData=[
             'openid'=>$xml_str->FromUserName,
             'add_time'=>$xml_str->CreateTime,
