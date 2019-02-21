@@ -81,7 +81,7 @@ class WeixinController extends Controller
                 if($res&&$res2){
                     $hint=$res['file_path'];   //hint  提示
                 }else{
-                    $hint='很遗憾，您的图片我们没收到.....请稍后重试！';
+                    $hint='很遗憾，您的语音我们没收到.....请稍后重试！';
                 }
                 $xmlStrResopnse='<xml>
                 <ToUserName><![CDATA['.$openid.']]></ToUserName>
@@ -95,7 +95,25 @@ class WeixinController extends Controller
 
             //用户发送视频
             if($xml_str->MsgType=='video'){
-
+                //获取media_id
+                $media_id=$xml_str->MediaId;
+                //保存图片到本地|服务器
+                $res=$this->saveMaterialLocal($media_id,'video');
+                //保存素材到数据库
+                $res2=$this->saveMaterial($xml_str,$res);
+                if($res&&$res2){
+                    $hint='我们已经收到你的视频啦！';   //hint  提示
+                }else{
+                    $hint='很遗憾，您的视频我们没收到.....请稍后重试！';
+                }
+                $xmlStrResopnse='<xml>
+                <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                <FromUserName><![CDATA['.$toUserName.']]></FromUserName>
+                <CreateTime>'.time().'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$hint.']]></Content>
+                </xml>';
+                echo $xmlStrResopnse;
             }
         }
 
@@ -314,14 +332,6 @@ class WeixinController extends Controller
         }
     }
 
-
-
-
-
-
-
-
-
     /**
      * 保存用户发送的素材到本地
      * @param $mediaId
@@ -348,6 +358,8 @@ class WeixinController extends Controller
             $localPath='wx/images/';
         }else if($type=='voice'){
             $localPath='wx/voice/';
+        }else if($type=='video'){
+            $localPath='wx/video/';
         }
         $WxImageSavePath=$localPath.$file_name;
         //保存路径/home/wwwroot/shop/storage/app/wx/images
