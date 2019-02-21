@@ -132,7 +132,6 @@ class AddMaterialController extends Controller
         $form->text('media_id', 'media_id');
         $form->text('material_url', 'material_url');
         $form->text('add_time', 'add_time');
-
         return $form;
     }
 
