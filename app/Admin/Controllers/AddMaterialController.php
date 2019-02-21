@@ -95,7 +95,7 @@ class AddMaterialController extends Controller
         $grid->id('Id');
         $grid->media_id('Media id');
         $grid->material_url('Material url')->display(function ($material_url){
-            return '<img src="'.$material_url.'">';
+            return "<img src=".$material_url." style='width:100px heigth:100px'>";
         });
         $grid->add_time('Add time');
 
