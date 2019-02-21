@@ -13,6 +13,7 @@ use Encore\Admin\Show;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use GuzzleHttp;
+use Illuminate\Support\Facades\Storage;
 
 
 class AddMaterialController extends Controller
@@ -21,6 +22,7 @@ class AddMaterialController extends Controller
     protected $redis_weixin_access_token = 'str:weixin_access_token';     //微信 access_token
 
     /**
+     * index素材首页
      * Index interface.
      *
      * @param Content $content
@@ -35,6 +37,7 @@ class AddMaterialController extends Controller
     }
 
     /**
+     * show详情
      * Show interface.
      *
      * @param mixed $id
@@ -44,27 +47,28 @@ class AddMaterialController extends Controller
     public function show($id, Content $content)
     {
         return $content
-            ->header('Detail')
+            ->header('详情')
             ->description('description')
             ->body($this->detail($id));
     }
 
     /**
-     * Edit interface.
+     * edit修改
      *
      * @param mixed $id
      * @param Content $content
      * @return Content
      */
-    public function edit($id, Content $content)
+    protected function edit($id,Content $content)
     {
         return $content
-            ->header('Edit')
+            ->header('修改')
             ->description('description')
             ->body($this->form()->edit($id));
     }
 
     /**
+     * create添加
      * Create interface.
      *
      * @param Content $content
@@ -75,10 +79,11 @@ class AddMaterialController extends Controller
         return $content
             ->header('Create')
             ->description('description')
-            ->body($this->form());
+            ->body($this->addMaterial());
     }
 
     /**
+     * grid类表展示表单
      * Make a grid builder.
      *
      * @return Grid
@@ -88,19 +93,15 @@ class AddMaterialController extends Controller
         $grid = new Grid(new WexinLasingMaterial);
 
         $grid->id('Id');
-        $grid->openid('Openid');
-        $grid->add_time('Add time');
-        $grid->msg_type('Msg type');
         $grid->media_id('Media id');
-        $grid->format('Format');
-        $grid->msg_id('Msg id');
-        $grid->file_name('File name');
-        $grid->file_path('File path');
+        $grid->material_url('Material url');
+        $grid->add_time('Add time');
 
         return $grid;
     }
 
     /**
+     * detail修改表单
      * Make a show builder.
      *
      * @param mixed $id
@@ -111,19 +112,15 @@ class AddMaterialController extends Controller
         $show = new Show(WexinLasingMaterial::findOrFail($id));
 
         $show->id('Id');
-        $show->openid('Openid');
-        $show->add_time('Add time');
-        $show->msg_type('Msg type');
         $show->media_id('Media id');
-        $show->format('Format');
-        $show->msg_id('Msg id');
-        $show->file_name('File name');
-        $show->file_path('File path');
+        $show->material_url('Material url');
+        $show->add_time('Add time');
 
         return $show;
     }
 
     /**
+     * 添加表单
      * Make a form builder.
      *
      * @return Form
@@ -132,16 +129,97 @@ class AddMaterialController extends Controller
     {
         $form = new Form(new WexinLasingMaterial);
 
-        $form->text('openid', 'Openid');
-        $form->text('add_time', 'Add time');
-        $form->text('msg_type', 'Msg type');
-        $form->text('media_id', 'Media id');
-        $form->text('format', 'Format')->default('1');
-        $form->text('msg_id', 'Msg id');
-        $form->text('file_name', 'File name');
-        $form->textarea('file_path', 'File path');
+        $form->text('media_id', 'media_id');
+        $form->text('material_url', 'material_url');
+        $form->text('add_time', 'add_time');
 
         return $form;
+    }
+
+    //素材添加视图
+    public function addMaterial(){
+        $form = new Form(new WexinLasingMaterial);
+        $form->image('media', '素材');
+        return $form;
+    }
+    //接收素材
+    public function getMaterial(Request $request){
+        $material=$request->file('media');
+        //获取文件名称
+        $file_name=$material->getClientOriginalName();
+        //获取文件扩展名
+        $file_ext=$material->getClientOriginalExtension();
+        //文件重命名
+        $file_new_name=str_random(15). '.'.$file_ext;
+        //保存文件
+        $save_file_path = $request->media->storeAs('material_images',$file_new_name);       //返回保存成功之后的文件路径
+
+        //将图片上传至永久素材
+        $save_lasing_material_data=$this->save_lasing_material($save_file_path);
+
+        //将数据保存到数据库
+        $res=$this->saveMaterialDataDb($save_lasing_material_data);
+        if($res){
+            echo '上传成功';exit;
+        }else{
+            echo '上传失败';exit;
+        }
+    }
+
+    //上传永久素材
+    public function save_lasing_material($file_path){
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+        //拼接url
+        $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$access_token.'&type=image';
+        $client = new GuzzleHttp\Client();
+        $response = $client->request('POST',$url,[
+            'multipart' => [
+                [
+                    'name'     => 'media',
+                    'contents' => fopen($file_path, 'r')
+                ],
+            ]
+        ]);
+        $body = $response->getBody();
+        $data = json_decode($body,true);
+        return $data;
+    }
+
+    //将上传永久素材后的数据保存到数据库
+    public function saveMaterialDataDb($data){
+        $insertData=[
+          'media_id'=>$data['media_id'],
+            'material_url'=>$data['url'],
+            'add_time'=>time()
+        ];
+        $res=WexinLasingMaterial::insertGetId($insertData);
+        if($res){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //获取素材列表
+    public function getMaterialList(){
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+        $url="https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=".$access_token;
+//调用微信接口
+        $client=new GuzzleHttp\Client(['base_uri' => $url]);
+        $data=[
+            "type"=>'image',
+            "offset"=>0,
+            "count"=>10,
+        ];
+        $r=$client->request('POST',$url,[
+            'body'=>json_encode($data,JSON_UNESCAPED_UNICODE)
+        ]);
+
+//解析微信接口返回信息
+        $request_arr=json_decode($r->getBody(),true);
+        var_dump($request_arr);die;
     }
 
     //微信群发
@@ -152,7 +230,7 @@ class AddMaterialController extends Controller
             ->description('description')
             ->body($this->group_sending_grid());
     }
-    //视图显示
+    //群发视图显示
     public function group_sending_grid(){
         $form = new Form(new WexinLasingMaterial);
         $form->textarea('content', '群发内容');

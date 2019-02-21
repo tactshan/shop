@@ -20,5 +20,9 @@ Route::group([
     $router->get('/auth/group_sending','AddMaterialController@groupSending');
     $router->post('/auth','AddMaterialController@group_content');
 
+    //添加素材
+    $router->post('/auth/add_material','AddMaterialController@getMaterial');
 
+    //获取素材列表
+    $router->get('/auth/getMaterialList','AddMaterialController@getMaterialList');
 });
