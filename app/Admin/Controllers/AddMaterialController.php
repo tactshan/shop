@@ -336,7 +336,7 @@ class AddMaterialController extends Controller
         ];
         $res=$client->request('POST', $url, ['body' => json_encode($data,JSON_UNESCAPED_UNICODE)]);
         $res_arr=json_decode($res->getBody(),true);
-        if($res_arr['errmsg']=='ok'){
+        if($res_arr['errmsg']=='ok'&&$res_arr['errcode']==0){
             $res2=WexinLasingMaterial::where(['id'=>$id])->delete();
             var_dump($res2);exit;
         }else{
