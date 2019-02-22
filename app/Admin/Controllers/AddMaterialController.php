@@ -226,7 +226,7 @@ class AddMaterialController extends Controller
         //获取access_token
         $access_token=$this->getWXAccessToken();
         $url="https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=".$access_token;
-//调用微信接口
+        //调用微信接口
         $client=new GuzzleHttp\Client(['base_uri' => $url]);
         $data=[
             "type"=>'image',
@@ -313,5 +313,30 @@ class AddMaterialController extends Controller
             Redis::setTimeout($this->redis_weixin_access_token,3600);
         }
         return $token;
+    }
+
+    //删除永久素材
+    protected function destroy($id){
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+        $url='https://api.weixin.qq.com/cgi-bin/material/del_material?access_token='.$access_token;
+        //根据id查询数据库中的media_id
+        $where=[
+          'id'=>$id
+        ];
+        $materialInfo=WexinLasingMaterial::where($where)->first()->toArray();
+        $media_id=$materialInfo['media_id'];
+        $client = new GuzzleHttp\Client();
+        $data=[
+          'media_id'=>$media_id
+        ];
+        $res=$client->request('POST', $url, ['body' => json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        $res_arr=json_decode($res->getBody(),true);
+        if($res_arr['errmsg']=='ok'){
+            $res2=WexinLasingMaterial::where(['id'=>$id])->delete();
+            var_dump($res2);exit;
+        }else{
+            echo '删除失败！错误码'.$res_arr['errmsg'];
+        }
     }
 }
