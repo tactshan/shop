@@ -195,7 +195,11 @@ class AddMaterialController extends Controller
         ]);
         $body = $response->getBody();
         $data = json_decode($body,true);
-        return $data;
+        if(empty($data['media_id'])){
+            echo '上传失败';exit;
+        }else{
+            return $data;
+        }
     }
 
     /**
