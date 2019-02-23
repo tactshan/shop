@@ -46,7 +46,6 @@ class WeixinController extends Controller
                     'send_time'=>time()
                 ];
                 $res=WeixinChatRecord::insertGetId($data);
-                var_dump($res);
         }
 
             //用户发送图片
