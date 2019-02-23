@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Weixin;
 
+use App\Model\WeixinChatRecord;
 use App\Model\WeixinMaterial;
 use App\Model\WeixinUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp;
@@ -35,16 +37,17 @@ class WeixinController extends Controller
 
             //用户发送文字
             if($xml_str->MsgType=='text'){
+                //保存到聊天记录表中
                 $msg=$xml_str->Content;
-                $xmlStrResopnse='<xml>
-                <ToUserName><![CDATA['.$openid.']]></ToUserName>
-                <FromUserName><![CDATA['.$toUserName.']]></FromUserName>
-                <CreateTime>'.time().'</CreateTime>
-                <MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA['.$msg.']]></Content>
-                </xml>';
-                echo $xmlStrResopnse;
-            }
+                $data=[
+                    'openid'=>$openid,
+                    'content'=>$msg,
+                    'send_people'=>$openid,
+                    'send_time'=>time()
+                ];
+                $res=WeixinChatRecord::insertGetId($data);
+                var_dump($res);
+        }
 
             //用户发送图片
             if($xml_str->MsgType=='image'){
@@ -410,6 +413,62 @@ class WeixinController extends Controller
         }else{
             return false;
         }
+    }
+
+    //微信用户列表
+    public function wxUserList(){
+        $info=DB::table('p_wx_users')->paginate(5);
+        $data=[
+            'info'=>$info,
+        ];
+        return view('weixin.wx_users_list',$data);
+    }
+    //微信互动视图
+    public function interactView($openid,$nickname){
+        $data=[
+            'openid'=>$openid,
+            'nickname'=>$nickname
+        ];
+        return view('weixin.wx_interact_view',$data);
+    }
+    //发消息给指定用户
+    public function wxInteract(){
+        $openid=$_POST['openid'];
+        $content=$_POST['content'];
+        //获取access_token
+        $access_token=$this->getWXAccessToken();
+        $url='https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token='.$access_token;
+        //请求微信接口
+        $client = new GuzzleHttp\Client(['base_uri' => $url]);
+        $data=[
+            "touser"=>$openid,
+            'msgtype'=>'text',
+            'text'=>[
+                "content"=>$content
+            ]
+        ];
+        $res=$client->request('POST', $url, ['body' => json_encode($data,JSON_UNESCAPED_UNICODE)]);
+        $res_arr=json_decode($res->getBody(),true);
+        if($res_arr['errcode']==0&&$res_arr['errmsg']=='ok'){
+            //将聊天记录保存到数据库
+            $data=[
+              'openid'=>$openid,
+              'content'=>$content,
+              'send_people'=>'客服',
+              'send_time'=>time()
+            ];
+            $res=WeixinChatRecord::insertGetId($data);
+            var_dump($res);
+        }
+    }
+    //实时获取聊天记录表中数据
+    public function getWxChatRecord(){
+        $openid=$_POST['openid'];
+        $where=[
+          'openid'=>$openid,
+        ];
+        $info=WeixinChatRecord::where($where)->OrderBy('send_time','asc')->get();
+        echo json_encode($info);
     }
 
 }

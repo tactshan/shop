@@ -25,4 +25,5 @@ Route::group([
 
     //获取素材列表
     $router->get('/auth/getMaterialList','AddMaterialController@getMaterialList');
+
 });

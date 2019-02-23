@@ -18,5 +18,7 @@ class VerifyCsrfToken extends Middleware
         '/weixin/valid',
         '/weixin/valid1',
         '/auth',
+        '/wx_interact',
+        '/get_wx_chat_record'
     ];
 }

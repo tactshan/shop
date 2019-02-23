@@ -106,3 +106,12 @@ Route::get('/weixin/get_access_token','Weixin\WeixinController@getWXAccessToken'
 Route::get('/weixin/group_sending','Weixin\WeixinController@GroupSending');      //群发送消息
 
 Route::get('/weixin/refresh_token','Weixin\WeixinController@refreshToken');     //刷新token
+
+//微信用户列表
+Route::get('/weixin/wx_user_list','Weixin\WeixinController@wxUserList');
+Route::post('/wx_interact','Weixin\WeixinController@wxInteract');
+//聊天界面
+Route::get('/wx_interact_view/{openid}/{nickname}','Weixin\WeixinController@interactView');
+//实时获取连天记录表
+Route::post('/get_wx_chat_record','Weixin\WeixinController@getWxChatRecord');
+
