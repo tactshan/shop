@@ -4,7 +4,7 @@
     <h1><font>和{{$nickname}}的聊天界面</font></h1>
     <input type="hidden" name="openid" id="openid" value="{{$openid}}">
     <input type="hidden" name="nickname" id="nickname" value="{{$nickname}}">
-    <div style="width: 500px;height: 500px;border: 1px red solid" id="show">
+    <div style="overflow:scroll;width: 500px;height: 500px;border: 1px red solid" id="show">
     </div>
     <input type="text" id="content" style="width: 500px;height: 50px;border: 1px blue solid">
     <button class="btn btn-danger" id="send">发送</button>
@@ -16,7 +16,7 @@
             var _openid=$('#openid').val()
             var _nickname=$('#nickname').val()
             setInterval(function () {
-                $('#show').empty()
+
                 $.ajax({
                     headers:{
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -25,6 +25,7 @@
                     type:'post',
                     data:{openid:_openid},
                     success:function (reg) {
+                        $('#show').empty()
                         var data = JSON.parse(reg)
                         $.each(data,function(i,n){
                             // console.log(n)
