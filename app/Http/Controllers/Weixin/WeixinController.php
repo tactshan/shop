@@ -39,13 +39,13 @@ class WeixinController extends Controller
             if($xml_str->MsgType=='text'){
                 //保存到聊天记录表中
                 $msg=$xml_str->Content;
-                $data=[
+                $Chat_record=[
                     'openid'=>$openid,
                     'content'=>$msg,
                     'send_people'=>$openid,
                     'send_time'=>time()
                 ];
-                $res=WeixinChatRecord::insertGetId($data);
+                $res=WeixinChatRecord::insertGetId($Chat_record);
         }
 
             //用户发送图片
