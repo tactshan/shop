@@ -120,3 +120,5 @@ Route::post('/get_wx_chat_record','Weixin\WeixinController@getWxChatRecord');
 Route::get('/wx_pay/{order_num}','Weixin\PayController@wxPay');
 //微信回调地址
 Route::post('/weixin/pay/notice','Weixin\PayController@notice');
+//检测是否支付成功
+Route::get('/weixin/pay/find','Weixin\PayController@find');

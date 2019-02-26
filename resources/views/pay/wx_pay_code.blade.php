@@ -5,6 +5,7 @@
         <div id="qrcode" ></div>
         <h3 style="color:red" align="center">扫一扫立即付款</h3>
         <input type="hidden" id="code_url" value="{{$code_url}}">
+        <input type="hidden" id="order_num" value="{{$order_num}}">
     </div>
 
 @endsection
@@ -12,6 +13,24 @@
     @parent
     <script src="{{URL::asset('js/qrcode.js')}}"></script>
     <script>
+        setInterval(function () {
+            var order_num=$('#order_num').val();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url     :   '/weixin/pay/find',
+                type    :   'post',
+                data    :   {order_num:order_num},
+                success :   function(res){
+                    if(res==1){
+                        alert('支付成功');
+                        location.href="/allorders";
+                    }
+                },
+                dataType:'json',
+            })
+        },3000);
         var code_url=$('#code_url').val();
         var qrcode = new QRCode('qrcode', {
             text: code_url,

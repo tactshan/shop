@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Weixin;
 
+use App\Model\OrderDetailModel;
 use App\Model\OrderModel;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
@@ -36,7 +37,8 @@ class PayController extends Controller
         $data =  simplexml_load_string($res);
         $code_url=$data->code_url;
         $info=[
-          'code_url'=>$code_url
+          'code_url'=>$code_url,
+            'order_num'=>$order_num
         ];
         return view('pay.wx_pay_code',$info);
     }
@@ -209,6 +211,18 @@ class PayController extends Controller
         $res2=UserModel::where($userWhere)->update($userData);
         if($res&&$res2){
             return true;
+        }
+    }
+    //ajax实时检测订单状态
+    public function find()
+    {
+        $order_num=$_POST['order_num'];
+        $where=[
+          'order_num'=>$order_num
+        ];
+        $data=OrderModel::where($where)->first()->toArray();
+        if($data['order_status']==2){
+            echo 1;
         }
     }
 }
