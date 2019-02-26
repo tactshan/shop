@@ -121,4 +121,4 @@ Route::get('/wx_pay/{order_num}','Weixin\PayController@wxPay');
 //微信回调地址
 Route::post('/weixin/pay/notice','Weixin\PayController@notice');
 //检测是否支付成功
-Route::get('/weixin/pay/find','Weixin\PayController@find');
+Route::post('/weixin/pay/find','Weixin\PayController@find');
