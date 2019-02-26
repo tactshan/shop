@@ -115,3 +115,8 @@ Route::get('/wx_interact_view/{openid}/{nickname}','Weixin\WeixinController@inte
 //实时获取连天记录表
 Route::post('/get_wx_chat_record','Weixin\WeixinController@getWxChatRecord');
 
+
+//微信支付
+Route::get('/wx_pay/{order_num}','Weixin\PayController@wxPay');
+//微信回调地址
+Route::post('/weixin/pay/notice','Weixin\PayController@notice');
