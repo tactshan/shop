@@ -13,6 +13,11 @@ class PayController extends Controller
     public $weixin_unifiedorder_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder'; //微信支付接口
     public $weixin_notify_url = 'https://shop.tactshan.com/weixin/pay/notice';     //支付通知回调
 
+    /**
+     * 处理订单信息，生成签名，以及请求微信支付接口，得到二维码URL并显示视图
+     * @param $order_num
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function wxPay($order_num)
     {
         $total_fee= 1;
@@ -42,12 +47,22 @@ class PayController extends Controller
         ];
         return view('pay.wx_pay_code',$info);
     }
+
+    /**
+     * 设置签名
+     * @return string
+     */
     public function SetSing()
     {
         $sign=$this->MakeSing();
         $this->values['sign'] = $sign;
         return $sign;
     }
+
+    /**
+     * 生成签名
+     * @return string
+     */
     public function MakeSing()
     {
         //签名步骤一：按字典序排序参数
@@ -61,6 +76,7 @@ class PayController extends Controller
         $result = strtoupper($string);
         return $result;
     }
+    
     /**
      * 格式化参数格式化成url参数
      */
@@ -76,7 +92,11 @@ class PayController extends Controller
         $buff = trim($buff, "&");
         return $buff;
     }
-    //转化数据
+
+    /**
+     * 输出xml字符串
+     * @return string
+     */
     public function ToXml()
     {
         if(!is_array($this->values)||count($this->values)<= 0){
@@ -94,6 +114,15 @@ class PayController extends Controller
         $xml.="</xml>";
         return $xml;
     }
+
+    /**
+     * 以post方式提交xml到对应的接口url
+     * @param $xml
+     * @param $url
+     * @param bool $useCert
+     * @param int $second
+     * @return mixed
+     */
     public function postXmlCurl($xml, $url, $useCert = false, $second = 30)
     {
         $ch =curl_init();
@@ -164,7 +193,12 @@ class PayController extends Controller
         $response = '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
         echo $response;
     }
-    //验签
+
+    /**
+     * 验签
+     * @param $xml
+     * @return bool
+     */
     public function check_sign($xml)
     {
         $this->values = [];
@@ -176,7 +210,12 @@ class PayController extends Controller
             return true;
         }
     }
-    //处理订单逻辑
+
+    /**
+     * 处理订单逻辑
+     * @param $data
+     * @return bool
+     */
     function dealOrder($data){
         $order_num=$data['out_trade_no'];
         $orderWhere=[
@@ -213,7 +252,10 @@ class PayController extends Controller
             return true;
         }
     }
-    //ajax实时检测订单状态
+
+    /**
+     * ajax实时检测订单状态
+     */
     public function find()
     {
         $order_num=$_POST['order_num'];
