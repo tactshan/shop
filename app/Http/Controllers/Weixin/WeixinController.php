@@ -476,7 +476,7 @@ class WeixinController extends Controller
      */
     public function login()
     {
-        echo urlencode('http://shop.tactshan.com/weixin/getcode');
+//        echo urlencode('http://shop.tactshan.com/weixin/getcode');
         return view('weixin.login');
     }
 
@@ -485,6 +485,11 @@ class WeixinController extends Controller
      */
     public function getCode()
     {
-        var_dump($_GET);
+        $code=$_GET['code'];
+        $token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxe24f70961302b5a5&secret=0f121743ff20a3a454e4a12aeecef4be&code='.$code.'&grant_type=authorization_code';
+        $token_json = file_get_contents($token_url);
+        $token_arr = json_decode($token_json,true);
+        echo '<hr>';
+        echo '<pre>';print_r($token_arr);echo '</pre>';
     }
 }
