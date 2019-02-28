@@ -501,6 +501,7 @@ class WeixinController extends Controller
         $user_json = file_get_contents($user_info_url);
 
         $user_arr = json_decode($user_json,true);
+        var_dump($user_arr);exit;
         //处理微信数据
         $where=[
             'openid'=>$user_arr['openid']
@@ -530,7 +531,7 @@ class WeixinController extends Controller
                 $request->session()->put('uid',$uid);
                 setcookie('cookie_token',$token,time()+86400,'','',false,true);
                 $request->session()->put('u_token',$token);
-                header("refresh:2;url=/goodslist");
+                header("refresh:2;url=/goodslist");exit;
             }
         }
     }
