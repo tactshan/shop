@@ -505,7 +505,7 @@ class WeixinController extends Controller
         $where=[
             'openid'=>$user_arr['openid']
         ];
-        $userInfo=WeixinUser::where($where)->first()->toArray();
+        $userInfo=WeixinUser::where($where)->first();
         $token = substr(md5(time().mt_rand(1,99999)),10,10);
         if(empty($userInfo)){
             //添加入库
@@ -533,7 +533,7 @@ class WeixinController extends Controller
                 header("refresh:2;url=/goodslist");exit;
             }
         }else{
-            $request->session()->put('uid',$userInfo['uid']);
+            $request->session()->put('uid',$userInfo->uid);
             setcookie('cookie_token',$token,time()+86400,'','',false,true);
             $request->session()->put('u_token',$token);
             header("refresh:2;url=/goodslist");exit;
