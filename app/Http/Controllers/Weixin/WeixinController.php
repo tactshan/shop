@@ -535,6 +535,7 @@ class WeixinController extends Controller
 //            }
         }else{
             $uid=$userInfo->uid;
+            echo $uid;exit;
             $request->session()->put('uid',$uid);
             setcookie('cookie_token',$token,time()+86400,'','',false,true);
             $request->session()->put('u_token',$token);
