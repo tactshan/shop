@@ -505,7 +505,8 @@ class WeixinController extends Controller
         $where=[
             'openid'=>$user_arr['openid']
         ];
-        $userInfo=WeixinUser::where($where)->first();
+        $userInfo=WeixinUser::where($where)->first()->toArray();
+        $token = substr(md5(time().mt_rand(1,99999)),10,10);
         if(empty($userInfo)){
             //添加入库
             //添加users表
@@ -513,7 +514,6 @@ class WeixinController extends Controller
                 'name'=>'wx_'.str_random(5)
             ];
             $uid=UserModel::insertGetId($user_data);
-            echo $uid."<br>";
             //添加wx_user表
             $info=[
                 'uid'=>$uid,
@@ -526,14 +526,18 @@ class WeixinController extends Controller
                 'add_time'=>time(),
             ];
             $id=WeixinUser::insertGetId($info);
-            echo $id."<br>";exit;
             if(!empty($id)){
-                $token = substr(md5(time().mt_rand(1,99999)),10,10);
                 $request->session()->put('uid',$uid);
                 setcookie('cookie_token',$token,time()+86400,'','',false,true);
                 $request->session()->put('u_token',$token);
                 header("refresh:2;url=/goodslist");exit;
             }
+        }else{
+            $token = substr(md5(time().mt_rand(1,99999)),10,10);
+            $request->session()->put('uid',$userInfo['uid']);
+            setcookie('cookie_token',$token,time()+86400,'','',false,true);
+            $request->session()->put('u_token',$token);
+            header("refresh:2;url=/goodslist");exit;
         }
     }
 }
