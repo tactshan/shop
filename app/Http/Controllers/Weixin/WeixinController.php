@@ -527,12 +527,12 @@ class WeixinController extends Controller
             ];
             $id=WeixinUser::insertGetId($info);
             if(!empty($id)){
-                setcookie('uid',$uid,time()+86400,'','',false,true);
+                setcookie('uid',$uid,time()+60*60*24,'/','',false,true);
                 header("refresh:2;url=/goodslist");exit;
             }
         }else{
             $uid=$userInfo->uid;
-            setcookie('uid',$uid,time()+86400,'','',false,true);
+            setcookie('uid',$uid,time()+60*60*24,'/','',false,true);
             header("refresh:2;url=/goodslist");exit;
         }
     }
