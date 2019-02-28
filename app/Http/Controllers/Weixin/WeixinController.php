@@ -534,10 +534,10 @@ class WeixinController extends Controller
 //                header("refresh:2;url=/goodslist");exit;
 //            }
         }else{
-//            $request->session()->put('uid',$userInfo->uid);
-//            setcookie('cookie_token',$token,time()+86400,'','',false,true);
-//            $request->session()->put('u_token',$token);
-//            header("refresh:2;url=/goodslist");exit;
+            $request->session()->put('uid',$userInfo->uid);
+            setcookie('cookie_token',$token,time()+86400,'','',false,true);
+            $request->session()->put('u_token',$token);
+            header("refresh:2;url=/goodslist");exit;
             echo '222';exit;
         }
     }
