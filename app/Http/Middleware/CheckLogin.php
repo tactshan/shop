@@ -16,7 +16,7 @@ class CheckLogin
     public function handle($request, Closure $next)
     {
         $uid=session()->get('uid');
-//        echo $uid."<br>";
+        echo $uid."<br>";
         $access_token=session()->get('u_token');
 //        echo $access_token."<br>";
 //        $cookie_token=$request->cookie('cookie_token');
