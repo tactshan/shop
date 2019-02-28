@@ -100,9 +100,7 @@ class UserController extends Controller
        $data=UserModel::where($where)->first();
         $token = substr(md5(time().mt_rand(1,99999)),10,10);
        if(password_verify($pwd,$data->pwd) !== false){
-           $request->session()->put('uid',$data->uid);
-           setcookie('cookie_token',$token,time()+86400,'','',false,true);
-           $request->session()->put('u_token',$token);
+           setcookie('uid',$data->uid,time()+86400,'','',false,true);
            echo 'Login successfully';
            header("refresh:2;url=/goodslist");
        }else{

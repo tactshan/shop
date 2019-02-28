@@ -526,21 +526,14 @@ class WeixinController extends Controller
                 'add_time'=>time(),
             ];
             $id=WeixinUser::insertGetId($info);
-            echo '111';exit;
-//            if(!empty($id)){
-//                $request->session()->put('uid',$uid);
-//                setcookie('cookie_token',$token,time()+86400,'','',false,true);
-//                $request->session()->put('u_token',$token);
-//                header("refresh:2;url=/goodslist");exit;
-//            }
+            if(!empty($id)){
+                setcookie('uid',$uid,time()+86400,'','',false,true);
+                header("refresh:2;url=/goodslist");exit;
+            }
         }else{
             $uid=$userInfo->uid;
-            $request->session()->put('uid',$uid);
-            echo session()->get('uid');exit;
-            setcookie('cookie_token',$token,time()+86400,'','',false,true);
-            $request->session()->put('u_token',$token);
+            setcookie('uid',$uid,time()+86400,'','',false,true);
             header("refresh:2;url=/goodslist");exit;
-            echo '222';exit;
         }
     }
 }
