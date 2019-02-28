@@ -535,8 +535,8 @@ class WeixinController extends Controller
 //            }
         }else{
             $uid=$userInfo->uid;
-            echo $uid;exit;
             $request->session()->put('uid',$uid);
+            echo session()->get('uid');exit;
             setcookie('cookie_token',$token,time()+86400,'','',false,true);
             $request->session()->put('u_token',$token);
             header("refresh:2;url=/goodslist");exit;
