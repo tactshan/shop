@@ -533,7 +533,6 @@ class WeixinController extends Controller
                 header("refresh:2;url=/goodslist");exit;
             }
         }else{
-            $token = substr(md5(time().mt_rand(1,99999)),10,10);
             $request->session()->put('uid',$userInfo['uid']);
             setcookie('cookie_token',$token,time()+86400,'','',false,true);
             $request->session()->put('u_token',$token);
