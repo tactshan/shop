@@ -470,4 +470,21 @@ class WeixinController extends Controller
         echo json_encode($info);
     }
 
+    /**
+     * Weixin 登录
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function login()
+    {
+        echo urlencode('http://shop.tactshan.com/weixin/getcode');
+        return view('weixin.login');
+    }
+
+    /**
+     * 获取code
+     */
+    public function getCode()
+    {
+        var_dump($_GET);
+    }
 }

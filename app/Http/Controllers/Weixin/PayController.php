@@ -76,7 +76,7 @@ class PayController extends Controller
         $result = strtoupper($string);
         return $result;
     }
-    
+
     /**
      * 格式化参数格式化成url参数
      */

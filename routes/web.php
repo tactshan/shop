@@ -122,3 +122,8 @@ Route::get('/wx_pay/{order_num}','Weixin\PayController@wxPay');
 Route::post('/weixin/pay/notice','Weixin\PayController@notice');
 //检测是否支付成功
 Route::post('/weixin/pay/find','Weixin\PayController@find');
+
+//微信登录
+Route::get('weixin/login','Weixin\WeixinController@login');
+//接受code
+Route::get('weixin/getcode','Weixin\WeixinController@getCode');
