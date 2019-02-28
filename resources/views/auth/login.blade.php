@@ -54,7 +54,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     Login
                                 </button>
-
+                                <button type="submit" class="btn btn-primary">
+                                    <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxe24f70961302b5a5&amp;redirect_uri=http%3A%2F%2Fmall.77sc.com.cn%2Fweixin.php?r1=http%3A%2F%2Fshop.tactshan.com%2Fweixin%2Fgetcode&amp;response_type=code&amp;scope=snsapi_login&amp;state=STATE#wechat_redirect"><font style="color: white;">微信扫码登录</font></a>
+                                </button>
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     Forgot Your Password?
                                 </a>

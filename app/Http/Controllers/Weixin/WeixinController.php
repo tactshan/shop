@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Weixin;
 
+use App\Model\UserModel;
 use App\Model\WeixinChatRecord;
 use App\Model\WeixinMaterial;
 use App\Model\WeixinUser;
@@ -483,7 +484,7 @@ class WeixinController extends Controller
     /**
      * 获取code
      */
-    public function getCode()
+    public function getCode(Request $request)
     {
         //1获取code(微信登录成功，即获得code)
         $code=$_GET['code'];
@@ -491,8 +492,6 @@ class WeixinController extends Controller
         $token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxe24f70961302b5a5&secret=0f121743ff20a3a454e4a12aeecef4be&code='.$code.'&grant_type=authorization_code';
         $token_json = file_get_contents($token_url);
         $token_arr = json_decode($token_json,true);
-        echo '<hr>';
-        echo '<pre>';print_r($token_arr);echo '</pre>';
 
         $access_token = $token_arr['access_token'];
         $openid = $token_arr['openid'];
@@ -502,7 +501,37 @@ class WeixinController extends Controller
         $user_json = file_get_contents($user_info_url);
 
         $user_arr = json_decode($user_json,true);
-        echo '<hr>';
-        echo '<pre>';print_r($user_arr);echo '</pre>';
+        //处理微信数据
+        $where=[
+            'openid'=>$user_arr['openid']
+        ];
+        $userInfo=WeixinUser::where($where)->first();
+        if(empty($userInfo)){
+            //添加入库
+            //添加users表
+            $user_data=[
+                'name'=>'wx_'.str_random(5)
+            ];
+            $uid=UserModel::insertGetId($user_data);
+            //添加wx_user表
+            $info=[
+                'uid'=>$uid,
+                'openid'=>$user_arr['openid'],
+                'add_time'=>time(),
+                'nickname'=>$user_arr['nickname'],
+                'sex'=>$user_arr['sex'],
+                'headimgurl'=>$user_arr['headimgurl'],
+                'subscribe_time'=>time(),
+                'add_time'=>time(),
+            ];
+            $id=WeixinUser::insertGetId($info);
+            if(!empty($id)){
+                $token = substr(md5(time().mt_rand(1,99999)),10,10);
+                $request->session()->put('uid',$uid);
+                setcookie('cookie_token',$token,time()+86400,'','',false,true);
+                $request->session()->put('u_token',$token);
+                header("refresh:2;url=/goodslist");
+            }
+        }
     }
 }

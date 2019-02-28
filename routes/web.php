@@ -66,7 +66,7 @@ Route::get('/orderadd','Order\OrderController@createOrder');
 //订单详情
 Route::get('/orderdetail/{order_num}','Order\OrderController@orderDetail');
 //我的订单
-Route::get('/allorders','Order\OrderController@allOrders');
+Route::get('/allorders','Order\OrderController@allOrders')->middleware('checklogin');
 //订单支付
 Route::get('/orderpay/{order_num}','Order\OrderController@orderPay');
 //取消订单

@@ -19,6 +19,7 @@
                 </tr>
             </table>
             <input class="btn btn-danger" type="submit" value="Login">
+            <button class="btn btn-danger" ><a href="https://open.weixin.qq.com/connect/qrconnect?appid=wxe24f70961302b5a5&amp;redirect_uri=http%3A%2F%2Fmall.77sc.com.cn%2Fweixin.php?r1=http%3A%2F%2Fshop.tactshan.com%2Fweixin%2Fgetcode&amp;response_type=code&amp;scope=snsapi_login&amp;state=STATE#wechat_redirect" style="text-decoration: none;color: white;">微信登录</a></button>
             <button class="btn btn-danger" ><a href="/userreg" style="text-decoration: none;color: white;">Go register!</a></button>
         </form>
     </body>
