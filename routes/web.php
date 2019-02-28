@@ -49,9 +49,9 @@ Route::post('/userlogin','User\UserController@userlogin');
 Route::get('/userquit','User\UserController@quit');
 
 //购物车列表
-Route::get('/cartlist','Cart\CartController@cartList');
+Route::get('/cartlist','Cart\CartController@cartList')->middleware('checklogin');
 //购物车添加
-Route::get('/cartadd/{goods_id}','Cart\CartController@cartAdd');
+Route::get('/cartadd/{goods_id}','Cart\CartController@cartAdd')->middleware('checklogin');
 Route::post('/cartadd','Cart\CartController@cartAddDo');
 //删除购物车数据
 Route::get('/delcart/{goods_id}','Cart\CartController@delCartInfo');
@@ -68,9 +68,9 @@ Route::get('/orderdetail/{order_num}','Order\OrderController@orderDetail');
 //我的订单
 Route::get('/allorders','Order\OrderController@allOrders')->middleware('checklogin');
 //订单支付
-Route::get('/orderpay/{order_num}','Order\OrderController@orderPay');
+Route::get('/orderpay/{order_num}','Order\OrderController@orderPay')->middleware('checklogin');
 //取消订单
-Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDel');
+Route::get('/orderdel/{order_num}/{order_status}','Order\OrderController@orderDel')->middleware('checklogin');
 
 ////订单测试
 Route::get('/ordertest','Order\OrderController@orderTest');
@@ -108,16 +108,16 @@ Route::get('/weixin/group_sending','Weixin\WeixinController@GroupSending');     
 Route::get('/weixin/refresh_token','Weixin\WeixinController@refreshToken');     //刷新token
 
 //微信用户列表
-Route::get('/weixin/wx_user_list','Weixin\WeixinController@wxUserList');
+Route::get('/weixin/wx_user_list','Weixin\WeixinController@wxUserList')->middleware('checklogin');
 Route::post('/wx_interact','Weixin\WeixinController@wxInteract');
 //聊天界面
-Route::get('/wx_interact_view/{openid}/{nickname}','Weixin\WeixinController@interactView');
+Route::get('/wx_interact_view/{openid}/{nickname}','Weixin\WeixinController@interactView')->middleware('checklogin');
 //实时获取连天记录表
 Route::post('/get_wx_chat_record','Weixin\WeixinController@getWxChatRecord');
 
 
 //微信支付
-Route::get('/wx_pay/{order_num}','Weixin\PayController@wxPay');
+Route::get('/wx_pay/{order_num}','Weixin\PayController@wxPay')->middleware('checklogin');
 //微信回调地址
 Route::post('/weixin/pay/notice','Weixin\PayController@notice');
 //检测是否支付成功
