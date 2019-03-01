@@ -15,7 +15,7 @@
             timestamp: {{$jsinfo['timestamp']}}, // 必填，生成签名的时间戳
             nonceStr: "{{$jsinfo['noncestr']}}", // 必填，生成签名的随机串
             signature: "{{$jsinfo['sign']}}",// 必填，签名
-            jsApiList: ['chooseImage','uploadImage','getLocalImgData','startRecord'] // 必填，需要使用的JS接口列表
+            jsApiList: ['chooseImage','uploadImage','getLocalImgData','startRecord','getLocation'] // 必填，需要使用的JS接口列表
         });
         wx.ready(function () {
             $('#img').click(function () {
