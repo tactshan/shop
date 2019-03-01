@@ -15,7 +15,7 @@ class WeixinJsSDK extends Controller
         $jsconfig=[
             'openid'=>env('WEIXIN_JSSDK_APPID'),
             'timestamp'=>time(),
-            'nonceStr'=>str_random(10),
+            'noncestr'=>str_random(10),
 //            'sign'      => $this->wxJsConfigSign()
         ];
         $sign=$this->wxJsConfigSign($jsconfig);
