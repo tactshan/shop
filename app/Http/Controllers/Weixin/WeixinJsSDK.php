@@ -36,6 +36,7 @@ class WeixinJsSDK extends Controller
         $current_url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];     //当前调用 jsapi的 url
         $ticket=$this->getJsapiTicket();
         $str =  'jsapi_ticket='.$ticket.'&noncestr='.$param['noncestr']. '&timestamp='. $param['timestamp']. '&url='.$current_url;
+        echo $str;exit;
         $signature=sha1($str);
         return $signature;
     }
