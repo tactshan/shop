@@ -129,4 +129,4 @@ Route::get('weixin/login','Weixin\WeixinController@login');
 Route::get('weixin/getcode','Weixin\WeixinController@getCode');
 
 //微信JS-SDK
-Route::get('weixin/jssdt/test','Weixin\WeixinJsSDK@wxJsSdk');
+Route::get('weixin/jssdk/test','Weixin\WeixinJsSDK@wxJsSdk');
