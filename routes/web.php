@@ -127,3 +127,6 @@ Route::post('/weixin/pay/find','Weixin\PayController@find');
 Route::get('weixin/login','Weixin\WeixinController@login');
 //接受code
 Route::get('weixin/getcode','Weixin\WeixinController@getCode');
+
+//微信JS-SDK
+Route::get('weixin/jssdt/test','Weixin\WeixinJsSDK@wxJsSdk');
