@@ -81,7 +81,7 @@ class WeixinJsSDK extends Controller
             $data = json_decode(file_get_contents($url),true);
             //记录缓存
             $ticket = $data['ticket'];
-            Redis::set($this->redis_weixin_jsapi_ticket,$token);
+            Redis::set($this->redis_weixin_jsapi_ticket,$ticket);
             Redis::setTimeout($this->redis_weixin_jsapi_ticket,3600);
         }
         return $ticket;
