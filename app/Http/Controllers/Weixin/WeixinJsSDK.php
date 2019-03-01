@@ -47,7 +47,7 @@ class WeixinJsSDK extends Controller
     {
         //获取缓存
         $token = Redis::get($this->redis_weixin_access_token_jssdk);
-        if(!$token){        // 无缓存 请求微信接口
+        if(empty($token)){        // 无缓存 请求微信接口
             $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WEIXIN_JSSDK_APPID').'&secret='.env('WEIXIN_JSSDK_APPSECRET');
             $data = json_decode(file_get_contents($url),true);
             //记录缓存
@@ -75,7 +75,7 @@ class WeixinJsSDK extends Controller
     {
         //获取缓存
         $ticket= Redis::get($this->redis_weixin_jsapi_ticket);
-        if(!$ticket){
+        if(empty($ticket)){
             $token=$this->getWXAccessToken();
             $url='https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$token.'&type=jsapi';
             $data = json_decode(file_get_contents($url),true);
