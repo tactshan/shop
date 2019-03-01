@@ -23,6 +23,7 @@ class WeixinJsSDK extends Controller
         $data=[
            'jsinfo'=>$jsconfig
         ];
+//        var_dump($data);exit;
         return view('weixin.wx_jssdk',$data);
     }
 
