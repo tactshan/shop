@@ -3,7 +3,7 @@
 @section('content')
     <h1><font>JS-SDK</font></h1>
     <button id="img">选择图片</button>
-    <button id="saosao">扫一扫</button>
+    <button id="saosao">获取我的位置</button>
 @endsection
 @section('footer')
     @parent
