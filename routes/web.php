@@ -133,3 +133,7 @@ Route::get('weixin/jssdk/test','Weixin\WeixinJsSDK@wxJsSdk');
 Route::get('weixin/jssdk/gettoken','Weixin\WeixinJsSDK@getWXAccessToken');
 Route::get('weixin/jssdk/refresh_token','Weixin\WeixinJsSDK@refreshToken');     //刷新token
 Route::get('weixin/jssdk/getticket','Weixin\WeixinJsSDK@getJsapiTicket');
+
+
+//WebSocket测试
+Route::get('weixin/jssdk/scoket','Weixin\WeixinJsSDK@test');

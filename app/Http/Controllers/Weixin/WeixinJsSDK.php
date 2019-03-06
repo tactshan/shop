@@ -87,4 +87,8 @@ class WeixinJsSDK extends Controller
         return $ticket;
     }
 
+    public function test()
+    {
+        return view('weixin.test');
+    }
 }

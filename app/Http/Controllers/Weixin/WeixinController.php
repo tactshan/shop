@@ -179,7 +179,8 @@ class WeixinController extends Controller
     /**
      * 自动回复
      */
-    public function getContent($openid,$toUserName){
+    public function getContent($openid,$toUserName)
+    {
         $time=time();
         $date=date("Y/m/d H:i:s");
         $content='你好，我是Tactshan！温馨提示您当前时间为'.$date;
@@ -240,7 +241,8 @@ class WeixinController extends Controller
     /**
      * 群发送消息
      */
-    public function GroupSending(){
+    public function GroupSending()
+    {
         //获取access_token
         $access_token=$this->getWXAccessToken();
         //拼接url
@@ -269,7 +271,8 @@ class WeixinController extends Controller
     /**
      * 自定义菜单创建
      */
-    public function createMenu(){
+    public function createMenu()
+    {
         //获取access_token
         $access_token=$this->getWXAccessToken();
         //拼接url
@@ -340,7 +343,8 @@ class WeixinController extends Controller
      * @param $mediaId
      * @return bool
      */
-    public function saveMaterialLocal($mediaId,$type){
+    public function saveMaterialLocal($mediaId,$type)
+    {
         $client=new GuzzleHttp\Client();
         //获取access_token
         $access_token=$this->getWXAccessToken();
@@ -394,7 +398,8 @@ class WeixinController extends Controller
      * @param $saveInfo
      * @return bool
      */
-    public function saveMaterial($xml_str,$saveInfo){
+    public function saveMaterial($xml_str,$saveInfo)
+    {
         //https://shop.tactshan.com/wx/images/_ia27aqZeswBWrWR.jpg
         //http://www.vmshop.com/wx/images/dIAarm_pDvbNDy25.jpg
         $materialData=[
@@ -416,7 +421,8 @@ class WeixinController extends Controller
     }
 
     //微信用户列表
-    public function wxUserList(){
+    public function wxUserList()
+    {
         $info=DB::table('p_wx_users')->paginate(5);
         $data=[
             'info'=>$info,
@@ -424,7 +430,8 @@ class WeixinController extends Controller
         return view('weixin.wx_users_list',$data);
     }
     //微信互动视图
-    public function interactView($openid,$nickname){
+    public function interactView($openid,$nickname)
+    {
         $data=[
             'openid'=>$openid,
             'nickname'=>$nickname
@@ -432,7 +439,8 @@ class WeixinController extends Controller
         return view('weixin.wx_interact_view',$data);
     }
     //发消息给指定用户
-    public function wxInteract(){
+    public function wxInteract()
+    {
         $openid=$_POST['openid'];
         $content=$_POST['content'];
         //获取access_token
@@ -462,7 +470,8 @@ class WeixinController extends Controller
         }
     }
     //实时获取聊天记录表中数据
-    public function getWxChatRecord(){
+    public function getWxChatRecord()
+    {
         $openid=$_POST['openid'];
         $where=[
           'openid'=>$openid,
