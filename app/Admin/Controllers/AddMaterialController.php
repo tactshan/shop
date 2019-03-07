@@ -164,7 +164,7 @@ class AddMaterialController extends Controller
         var_dump($save_file_path)."<br>";
         //将图片上传至永久素材
         $save_lasing_material_data=$this->save_lasing_material($save_file_path);
-        exit;
+        var_dump($save_lasing_material_data);exit;
 //        var_dump($save_lasing_material_data);exit;
         //将数据保存到数据库
         $res=$this->saveMaterialDataDb($save_lasing_material_data);
@@ -188,7 +188,6 @@ class AddMaterialController extends Controller
         //拼接url
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$access_token.'&type=image';
         $client = new GuzzleHttp\Client();
-        var_dump($client);exit;
         $response = $client->request('POST',$url,[
             'multipart' => [
                 [
@@ -197,8 +196,6 @@ class AddMaterialController extends Controller
                 ],
             ]
         ]);
-        var_dump($response)."<br>";
-        exit;
         $body = $response->getBody();
         $data = json_decode($body,true);
         if(empty($data['media_id'])){
