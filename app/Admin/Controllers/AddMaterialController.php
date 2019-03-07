@@ -182,6 +182,7 @@ class AddMaterialController extends Controller
     public function save_lasing_material($file_path){
         //获取access_token
         $access_token=$this->getWXAccessToken();
+        var_dump($access_token)."<br>";
         //拼接url
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$access_token.'&type=image';
         $client = new GuzzleHttp\Client();
@@ -193,6 +194,8 @@ class AddMaterialController extends Controller
                 ],
             ]
         ]);
+        var_dump($response)."<br>";
+        exit;
         $body = $response->getBody();
         $data = json_decode($body,true);
         if(empty($data['media_id'])){
