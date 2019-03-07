@@ -161,6 +161,7 @@ class AddMaterialController extends Controller
         $file_new_name=str_random(15). '.'.$file_ext;
         //保存文件
         $save_file_path = $request->media->storeAs('material_images',$file_new_name);       //返回保存成功之后的文件路径
+        var_dump($save_file_path)."<br>";exit;
         //将图片上传至永久素材
         $save_lasing_material_data=$this->save_lasing_material($save_file_path);
 //        var_dump($save_lasing_material_data);exit;
