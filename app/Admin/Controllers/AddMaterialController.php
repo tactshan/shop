@@ -188,6 +188,7 @@ class AddMaterialController extends Controller
         //拼接url
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$access_token.'&type=image';
         $client = new GuzzleHttp\Client();
+        var_dump($client);exit;
         $response = $client->request('POST',$url,[
             'multipart' => [
                 [
