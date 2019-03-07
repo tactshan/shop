@@ -185,7 +185,6 @@ class AddMaterialController extends Controller
         //获取access_token
         $access_token=$this->getWXAccessToken();
         var_dump($access_token)."<br>";
-        exit;
         //拼接url
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$access_token.'&type=image';
         $client = new GuzzleHttp\Client();
