@@ -161,10 +161,8 @@ class AddMaterialController extends Controller
         $file_new_name=str_random(15). '.'.$file_ext;
         //保存文件
         $save_file_path = $request->media->storeAs('material_images',$file_new_name);       //返回保存成功之后的文件路径
-        var_dump($save_file_path)."<br>";
         //将图片上传至永久素材
         $save_lasing_material_data=$this->save_lasing_material($save_file_path);
-        var_dump($save_lasing_material_data);exit;
 //        var_dump($save_lasing_material_data);exit;
         //将数据保存到数据库
         $res=$this->saveMaterialDataDb($save_lasing_material_data);
@@ -184,7 +182,6 @@ class AddMaterialController extends Controller
     public function save_lasing_material($file_path){
         //获取access_token
         $access_token=$this->getWXAccessToken();
-        var_dump($access_token)."<br>";
         //拼接url
         $url = 'https://api.weixin.qq.com/cgi-bin/material/add_material?access_token='.$access_token.'&type=image';
         $client = new GuzzleHttp\Client();
