@@ -146,9 +146,14 @@ class UserController extends Controller
     {
         $data=$_POST;
         $name = $data['nam'];
+        if(empty($name)){
+            echo '用户名不能为空！';
+            exit;
+        }
         $userInfo=UserModel::where(['name'=>$name])->first();
         if(!empty($userInfo)){
-            die('用户名已存在！');
+            echo '用户名已存在';
+            exit;
         }
         $uid = UserModel::insertGetId($data);
         echo $uid;
