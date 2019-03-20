@@ -145,6 +145,12 @@ class UserController extends Controller
     public function phoneRegister()
     {
         $data=$_POST;
-        echo json_encode($data);
+        $name = $data['nam'];
+        $userInfo=UserModel::where(['name'=>$name])->first();
+        if(!empty($userInfo)){
+            die('用户名已存在！');
+        }
+        $uid = UserModel::insertGetId($data);
+        echo $uid;
     }
 }
