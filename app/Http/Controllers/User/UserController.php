@@ -145,7 +145,10 @@ class UserController extends Controller
     public function phoneRegister()
     {
         $data=$_POST;
-        $name = $data['nam'];
+        $email = $data['email'];
+        $pwd = $data['pwd'];
+        echo '邮箱：'.$email,'密码：'.$pwd;
+        die;
         if(empty($name)){
             echo '用户名不能为空！';
             exit;
