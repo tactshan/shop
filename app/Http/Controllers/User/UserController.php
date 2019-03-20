@@ -129,5 +129,6 @@ class UserController extends Controller
         $email = $_GET['email'];
         $pwd = $_GET['pwd'];
         echo "邮箱：".$email."密码：".$pwd;
+        die;
     }
 }
