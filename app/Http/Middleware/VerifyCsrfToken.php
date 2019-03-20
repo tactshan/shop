@@ -22,6 +22,7 @@ class VerifyCsrfToken extends Middleware
         '/get_wx_chat_record',
         '/weixin/pay/notice',
         '/weixin/pay/find',
-        'phone/phone_login'
+        'phone/phone_login',
+        'phone/phone_register',
     ];
 }
