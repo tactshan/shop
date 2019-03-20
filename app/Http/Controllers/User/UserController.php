@@ -126,11 +126,17 @@ class UserController extends Controller
      */
     public function phoneLogin()
     {
-//        $email = $_GET['email'];
-//        $pwd = $_GET['pwd'];
-//        echo "邮箱：".$email."密码：".$pwd;
-//        die;
-        $data = $_POST;
-        echo json_encode($data);
+        $email = $_POST['email'];
+        $pwd = $_POST['pwd'];
+        $where=[
+          'email'=>$email,
+          'pwd'=>$pwd
+        ];
+        $data=UserModel::where($where)->first();
+        if(empty($data)){
+            echo '账号或密码错误';
+        }else{
+            echo '登录成功';
+        }
     }
 }
