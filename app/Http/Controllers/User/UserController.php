@@ -136,7 +136,7 @@ class UserController extends Controller
         if(empty($data)){
             echo '账号或密码错误';
         }else{
-            echo '登录成功';
+            echo '1';
         }
     }
     /**
@@ -161,6 +161,8 @@ class UserController extends Controller
           'pwd'=>$pwd
         ];
         $uid = UserModel::insertGetId($insertData);
-        echo $uid;
+        if($uid){
+            echo '1';
+        }
     }
 }
