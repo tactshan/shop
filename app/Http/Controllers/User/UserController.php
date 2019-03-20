@@ -116,4 +116,16 @@ class UserController extends Controller
     public function quit(){
         header("refresh:0;url=/home");
     }
+
+
+
+
+
+    /**
+     * 手机登录测试
+     */
+    public function phoneLogin()
+    {
+        echo 'over!';
+    }
 }

@@ -137,3 +137,7 @@ Route::get('weixin/jssdk/getticket','Weixin\WeixinJsSDK@getJsapiTicket');
 
 //WebSocket测试
 Route::get('weixin/jssdk/scoket','Weixin\WeixinJsSDK@test');
+
+
+//手机登录测试
+Route::get('phone/phone_login','User\UserController@phoneLogin');
