@@ -147,18 +147,20 @@ class UserController extends Controller
         $data=$_POST;
         $email = $data['email'];
         $pwd = $data['pwd'];
-        echo '邮箱：'.$email,'密码：'.$pwd;
-        die;
-        if(empty($name)){
-            echo '用户名不能为空！';
+        if(empty($email)){
+            echo '邮箱不能为空！';
             exit;
         }
-        $userInfo=UserModel::where(['name'=>$name])->first();
+        $userInfo=UserModel::where(['email'=>$email])->first();
         if(!empty($userInfo)){
-            echo '用户名已存在';
+            echo '该邮箱已存在';
             exit;
         }
-        $uid = UserModel::insertGetId($data);
+        $insertData=[
+          'email'=>$email,
+          'pwd'=>$pwd
+        ];
+        $uid = UserModel::insertGetId($insertData);
         echo $uid;
     }
 }
