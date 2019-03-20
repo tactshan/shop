@@ -545,4 +545,8 @@ class WeixinController extends Controller
             header("refresh:2;url=/goodslist");exit;
         }
     }
+
+
+
+
 }

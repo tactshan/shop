@@ -26,4 +26,7 @@ Route::group([
     //获取素材列表
     $router->get('/auth/getMaterialList','AddMaterialController@getMaterialList');
 
+    //自定义菜单菜单管理
+    $router->get('/auth/weixin/menu','WeixinController@upManu');
+
 });

@@ -208,7 +208,6 @@ class AddMaterialController extends Controller
      * @return bool
      */
     public function saveMaterialDataDb($data){
-
         $insertData=[
           'media_id'=>$data['media_id'],
             'material_url'=>$data['url'],

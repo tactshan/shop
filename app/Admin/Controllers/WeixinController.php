@@ -142,4 +142,12 @@ class WeixinController extends Controller
 
         return $form;
     }
+
+    public function upManu(Content $content)
+    {
+        return $content
+            ->header('Index')
+            ->description('description')
+            ->body(view('weixin.admin.menu'));
+    }
 }
