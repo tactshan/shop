@@ -126,12 +126,11 @@ class UserController extends Controller
      */
     public function phoneLogin()
     {
-        echo 'over!!!';
 //        $email = $_GET['email'];
 //        $pwd = $_GET['pwd'];
 //        echo "邮箱：".$email."密码：".$pwd;
 //        die;
-//        $data = $_POST;
-//        echo json_encode($data);
+        $data = $_POST;
+        echo json_encode($data);
     }
 }
