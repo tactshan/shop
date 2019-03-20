@@ -126,6 +126,8 @@ class UserController extends Controller
      */
     public function phoneLogin()
     {
-        echo 'over!';
+        $email = $_GET['email'];
+        $pwd = $_GET['pwd'];
+        echo "邮箱：".$email."密码：".$pwd;
     }
 }
