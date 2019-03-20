@@ -141,3 +141,4 @@ Route::get('weixin/jssdk/scoket','Weixin\WeixinJsSDK@test');
 
 //手机登录测试
 Route::post('phone/phone_login','User\UserController@phoneLogin');
+Route::post('phone/phone_register','User\UserController@phoneRegister');

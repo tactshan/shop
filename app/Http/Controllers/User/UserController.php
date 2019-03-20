@@ -139,4 +139,12 @@ class UserController extends Controller
             echo '登录成功';
         }
     }
+    /**
+     * 手机注册
+     */
+    public function phoneRegister()
+    {
+        $data=$_POST;
+        echo json_encode($data);
+    }
 }
