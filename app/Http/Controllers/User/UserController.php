@@ -74,7 +74,7 @@ class UserController extends Controller
             echo 'Registered successfully';
             header("refresh:2;url=/userlogin");
         }else{
-            echo 'Registered fail';
+            echo 'Registered fail!';
         }
     }
 
